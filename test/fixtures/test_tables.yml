@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  date_time: 
+  cpu_util: 
+  cpu_idle: 
+  cpu_top: 
+  mem_usage: MyString
+
+two:
+  date_time: 
+  cpu_util: 
+  cpu_idle: 
+  cpu_top: 
+  mem_usage: MyString

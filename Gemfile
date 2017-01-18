@@ -3,6 +3,16 @@ source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.6'
+
+gem 'devise' # user authentication
+
+gem 'chartkick' # plotting
+
+gem 'groupdate' # to use group_by_date
+
+gem 'bootstrap-sass', '~> 3.3.6' #bootstrap
+
+#gem 'sass-rails', '>= 3.2'  # bootstrap
 # Use sqlite3 as the database for Active Record
 #gem 'sqlite3'
 gem 'pg'

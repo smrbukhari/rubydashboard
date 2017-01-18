@@ -5,10 +5,23 @@
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
+  <%= render 'layouts/shim' %>
 </head>
-<body style="background-color:powderblue;">
+
+<body style="background-color:white;">
+
+<%= render 'layouts/navbar' %>
+
+<% flash.each do |key, value| %>
+  <div class="alert alert-<%= key %>">
+    <a href="#" data-dismiss="alert" class="close">×</a>
+    <p>
+        <%= value %>
+    </p>
+  </div>
+<% end %>
 
 <%=yield %>
-
+<%= render 'layouts/footer' %>
 </body>
 </html>

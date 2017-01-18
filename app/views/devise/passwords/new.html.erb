@@ -1,0 +1,17 @@
+<div class="border-form-div text-center" >
+<h4><b> Forgot your password? </b></h4>
+
+<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+  <%= devise_error_messages! %>
+
+  <div class="field text-center">
+    <%= f.label :please_enter_email_below %><br />
+    <%= f.email_field :email, autofocus: true %>
+  </div>
+
+  <div class="actions, text-center" style="height: 100%;">
+    <%= f.submit "Reset my password",:class=>'btn btn-primary'%>
+  </div>
+<% end %>
+
+</div>
