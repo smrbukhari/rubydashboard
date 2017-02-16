@@ -1,0 +1,37 @@
+.my_row {
+		margin-top: 20px;
+	// margin-right: 5px;
+
+}
+
+.my_col {
+	 padding-left: 15px !important;
+	 padding-right: 0px !important;
+
+}
+.my_col_child {
+	
+	background-color: lavender;
+	width: 450px;
+	height: auto;
+}
+
+.graph_header{
+	
+	text-align: center;
+}
+
+.graph_title{
+	
+	font-size: 18px;
+    font-weight: bold;
+    line-height: 0.1;
+    
+}
+
+#mapid { 
+
+height: 350px;
+width: 350px;
+
+ }

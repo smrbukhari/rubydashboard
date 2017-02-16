@@ -1,0 +1,59 @@
+var bounds = [[37.789701, -122.456319], [37.754964, -122.383191]];
+
+			var rect = L.rectangle(bounds, {color: 'blue', weight: 1}).on('click', function (e) {
+
+		    // There event is event object
+		    // there e.type === 'click'
+		    // there e.lanlng === L.LatLng on map
+		    // there e.target.getLatLngs() - your rectangle coordinates
+		    // but e.target !== rect
+		    		console.info(e);
+					}).addTo(mymap);
+
+		
+			rect.on('dragstart', function(e){
+
+				var dragval = e.target.getLatLng();
+				console.log(dragval.lat, dragval.lng);
+			//	console.log(dragval);
+			//	console.log("OK");
+         //   var startlat = e.target.getLatLng();
+         //	mymap.on('click', function(e){
+/*
+         	var startlat =	e.latlng.lat;
+         	var startlong = e.latlng.lng;
+         	console.log(startlat + "," + startlong);
+
+	         	
+	         	});  //map.onclick closing
+	            */
+
+
+			}); //dragstart clossing
+
+		var marker = new L.Marker(san_fran,{draggable:true});
+         	mymap.addLayer(marker);
+
+			mymap.on('dragend',function(e){
+
+
+
+		//	mymap.on('click', function(e){
+
+         	var position = marker.getLatLng();
+         	console.log(position.lat,position.lng);
+
+            
+			});
+
+
+
+		function onEachFeature(feature, layer)
+		{
+
+			layer.on({
+
+				mouseover: console.log("OK")
+
+			});
+		}

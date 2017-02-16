@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161009195517) do
+ActiveRecord::Schema.define(version: 20170127071828) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,6 +19,12 @@ ActiveRecord::Schema.define(version: 20161009195517) do
   create_table "Tableau_test", id: false, force: :cascade do |t|
     t.date  "datetime"
     t.float "value"
+  end
+
+  create_table "snap_chat", id: false, force: :cascade do |t|
+    t.integer "year"
+    t.float   "snapchat_users"
+    t.float   "percentage_users"
   end
 
   create_table "sysmon_tests", force: :cascade do |t|
@@ -39,6 +45,14 @@ ActiveRecord::Schema.define(version: 20161009195517) do
     t.decimal  "cpu_util"
     t.decimal  "cpu_idle"
     t.decimal  "mem_usage"
+  end
+
+  create_table "testmaps", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.float    "latitude"
+    t.float    "longitude"
+    t.string   "applicant"
   end
 
   create_table "users", force: :cascade do |t|

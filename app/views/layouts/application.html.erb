@@ -2,8 +2,15 @@
 <html>
 <head>
   <title>Testapp</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true%>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag "https://www.google.com/jsapi" %>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+   <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+   <link rel="stylesheet" href="https://unpkg.com/leaflet-easybutton@2.0.0/src/easy-button.css">
+<script src="https://unpkg.com/leaflet-easybutton@2.0.0/src/easy-button.js"></script>
+
   <%= csrf_meta_tags %>
   <%= render 'layouts/shim' %>
 </head>
@@ -20,8 +27,9 @@
     </p>
   </div>
 <% end %>
-
 <%=yield %>
+
 <%= render 'layouts/footer' %>
+
 </body>
 </html>

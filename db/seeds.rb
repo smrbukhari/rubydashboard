@@ -5,3 +5,7 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+	maps = Testmap.create([{ applicant: 'Vuenafe',longitude: '-122.3969371393', latitude: '37.7852809995' }])
+	maps = Testmap.create([{ applicant: 'The Chai Cart',longitude: '-122.4027041719', latitude: '37.7928878955' }])
+	maps = Testmap.create([{ applicant: 'Two Gs Catering',longitude: '-122.3969549674', latitude: '37.7919857424' }])

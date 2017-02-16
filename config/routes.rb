@@ -10,8 +10,11 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'home#index'
   resources :products #this is route named products, need to generate a controller for this also see rails generate controller
-  get 'dashboard' => 'dashboard#index'
+  get 'analytics' => 'analytics#index'
   get 'demo' => 'demo#index'
+  get 'plotly_line_api' => 'demo#line_chart_data'
+  get 'plotly_map_api' => 'demo#map_data'
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
