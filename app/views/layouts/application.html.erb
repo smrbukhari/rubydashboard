@@ -2,14 +2,20 @@
 <html>
 <head>
   <title>Testapp</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script> <!--caching issues can cause Plotly not found errors in new production --> 
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true%>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag "https://www.google.com/jsapi" %>
-  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
    <link rel="stylesheet" href="https://unpkg.com/leaflet-easybutton@2.0.0/src/easy-button.css">
-<script src="https://unpkg.com/leaflet-easybutton@2.0.0/src/easy-button.js"></script>
+  <script src="https://unpkg.com/leaflet-easybutton@2.0.0/src/easy-button.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.2/css/bootstrap-slider.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.2/bootstrap-slider.js"></script>
+
 
   <%= csrf_meta_tags %>
   <%= render 'layouts/shim' %>

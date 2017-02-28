@@ -18,7 +18,7 @@ class DemoController < ApplicationController
 	end
 
 	def line_chart_data
-		test = SysmonTest.select('cpu_util, cpu_idle, date_time', 'mem_usage').order('date_time asc').limit(10)
+		test = SysmonTest.select('cpu_util, cpu_idle, date_time', 'mem_usage').order('date_time asc').limit(20)
 		render json:{data:test}, status:200
 	end
 

@@ -8,21 +8,21 @@ default: &default
   adapter: postgresql
   pool: 5
   timeout: 5000
-  username: postgres1
+  username: biadmin
   password: passwd
   host: localhost
 
 development:
   <<: *default
-  database: system_test111
+  database: bi_development
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: system_test1112
+  database: bi_test
 
 production:
   <<: *default
-  database: system_test211
+  database: bi_production

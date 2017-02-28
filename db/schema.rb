@@ -16,17 +16,6 @@ ActiveRecord::Schema.define(version: 20170127071828) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "Tableau_test", id: false, force: :cascade do |t|
-    t.date  "datetime"
-    t.float "value"
-  end
-
-  create_table "snap_chat", id: false, force: :cascade do |t|
-    t.integer "year"
-    t.float   "snapchat_users"
-    t.float   "percentage_users"
-  end
-
   create_table "sysmon_tests", force: :cascade do |t|
     t.datetime "date_time"
     t.decimal  "cpu_util"

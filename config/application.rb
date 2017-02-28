@@ -24,6 +24,9 @@ module Testapp
     config.active_record.raise_in_transactional_callbacks = true
     config.assets.initialize_on_precompile = false
 
+    config.generators do |g|
+    g.orm :active_record
+    end
 
   end
 end
