@@ -14,6 +14,8 @@ Rails.application.routes.draw do
   get 'demo' => 'demo#index'
   get 'plotly_line_api' => 'demo#line_chart_data'
   get 'plotly_map_api' => 'demo#map_data'
+  get 'headers' => 'analytics#data_values'
+
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

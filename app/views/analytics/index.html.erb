@@ -1,4 +1,12 @@
 
+<div class="size">
+  <input type="text" name="test" value="choose your size" class="field" readonly="readonly" />
+  <ul class="list">
+    <li>Send to Column(Longitude)</li>
+    <li>Send to Row(Latitude)</li>
+  </ul>
+</div>
+
 <!--  -->
 <%= render 'analytics/analytics_navbar' %>
 
@@ -14,18 +22,19 @@
          
       </ul>
             <div class="tab-content">
-                <div class="tab-pane headers" id="data"><ul class="list-group"><% for header in @headers %>  
+                <div class="tab-pane headers" id="data"> <!--  <ul class="list-group"><% for header in @headers %>  
                 <li class="list-group-item">
                 <label class="header_label"><%= header %></label><input type="checkbox" id="#{<%= header %>}" value="first_checkbox">
                 
                 </li>
                 <% end %>
                 </ul>
-
-
-
-
+                -->
+                <div id="tree1"> </div>
                 </div>
+
+
+
                <div  class="tab-pane" id="analytics">Analytics Tools Here</div> 
             </div>
         </div> <!-- end of tabs-->
@@ -43,7 +52,9 @@
               <option value="plBarDiv">Bar Chart</option> 
               <option value="plAreaDiv">Area Chart</option>
               <option value="plScatterDiv">Scatter Plot</option>
+            <!--  <option value="mapid_cm">Choropleth Map</option> -->
               <option value="mapid">Geolocation</option>
+            <!--  <option value="mapid_hm">Heat Map</option> -->
             <!--  <option value="HM">Heat Map</option> -->
             </select>
         </div>
@@ -54,19 +65,20 @@
          </div> 
         </div>
         <div class="col-sm-6">
-      <div id="plLineDiv" style="width: 100%; height: 400px; "><!-- Plotly chart will be drawn inside this DIV --></div>
-      <div id="plBarDiv" style="width: 100%; height: 400px;"><!-- Plotly chart will be drawn inside this DIV --></div>
-      <div id="plAreaDiv" style="width: 100%; height: 400px;"></div>
 
-      <div id="plScatterDiv" style="width: 100%; height: 400px;"> </div>
+            <div class="row col_row">
+            <div class="row col_row"><div class="col" style="width: 100%; height: 25px;   border-bottom: 1px solid #DDDDDD;">test col</div></div>
+            <div class="row col_row"><div class="col" style="width: 100%; height: 25px;   border-bottom: 1px solid #DDDDDD;">test row</div></div>
+
+          </div>
+          <div class="row col_row">
+      <div id="plLineDiv" style="width: 100%; height: 350px; "><!-- Plotly chart will be drawn inside this DIV --></div>
+      <div id="plBarDiv" style="width: 100%; height: 350px;"><!-- Plotly chart will be drawn inside this DIV --></div>
+      <div id="plAreaDiv" style="width: 100%; height: 350px;"></div>
+
+      <div id="plScatterDiv" style="width: 100%; height: 350px;"> </div>
       
-
-      <script> 
-
-
-    
-
-   </script>
+           </div>
 
     </div>
     <div class="col-sm-2 col-last-margin">

@@ -23,8 +23,10 @@ class DemoController < ApplicationController
 	end
 
 	def map_data
+		all_tweet = Tweet.only(:id, :created_at, :coordinates)
+		tweet = all_tweet.first
 		testmap = Testmap.select('applicant, latitude, longitude')
-		render json:{data:testmap}, status:200
+		render json:{data:[testmap,tweet]}, status:200
 	end
 
 	def pie_chart_data

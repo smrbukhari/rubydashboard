@@ -2,6 +2,7 @@ $(window).load(function () {
 
 	$('#plLineDiv').css('display', 'none');
  	//$('#mapid').css('display', 'none');
+
 	
 });
 $(document).ready(function () {
@@ -65,7 +66,82 @@ else{
 	$("#date_picker").slider({});
 
 
+
+	$.ajax({
+    url: "/headers",
+    type: "get",
+    datatype: "json",
+ //   data: JSON.stringify(data),
+ //   headers: {"content-type": "application/json"},
+    success: function (response) {
+
+    	//alert(response);
+    	$('#tree1').tree({
+            data: response[0]
+        });
+
+        $('#tree1').bind(
+    		'tree.click',
+    		function(event) {
+        	// The clicked node is 'event.node'
+        	var node = event.node;
+        	//alert(node.name);
+        	$('.list').fadeIn(400);
+			
+			$(document).keyup(function(event) { //keypress event, fadeout on 'escape'
+				if(event.keyCode == 27) {
+					$('.list').fadeOut(400);
+				}
+			});
+   		
+   		 }
+		
+		);
+
+
+    	}, //succes closing
+
+    error: function (response){
+
+    	}
+
+	}); // ajax closing
+
+			//$('.size').styleddropdown();
+
+		   	
+
 }); //document ready closing
 	
 
-
+		(function($){
+	$.fn.styleddropdown = function(){
+		return this.each(function(){
+			var obj = $(this)
+			obj.find('.field').click(function() { //onclick event, 'list' fadein
+			obj.find('.list').fadeIn(400);
+			
+			$(document).keyup(function(event) { //keypress event, fadeout on 'escape'
+				if(event.keyCode == 27) {
+				obj.find('.list').fadeOut(400);
+				}
+			});
+			
+			obj.find('.list').hover(function(){ },
+				function(){
+					$(this).fadeOut(400);
+				});
+			});
+			
+			obj.find('.list li').click(function() { //onclick event, change field value with selected 'list' item and fadeout 'list'
+			obj.find('.field')
+				.val($(this).html())
+				.css({
+					'background':'#fff',
+					'color':'#333'
+				});
+			obj.find('.list').fadeOut(400);
+			});
+		});
+	};
+})(jQuery);

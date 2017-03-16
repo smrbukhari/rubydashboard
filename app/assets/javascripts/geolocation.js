@@ -32,11 +32,20 @@ var isdragtrue = false;
   var san_fran = new L.LatLng(37.7739, -122.4312)
 
     //  alert ("success")
-      for (i = 0; i < response.data.length; i++) 
+    post_data = response.data[0];
+    mongo_data = response.data[1];
+    mongo_data['coordinates']['coordinates'][0]
+    mongo_data['coordinates']['coordinates'][1]
+    mongo_data['created_at']
+    mongo_data['_id']
+
+
+
+      for (i = 0; i < response.data[0].length; i++) 
       {
-        applicant.push(response.data[i].applicant);
-        latitude.push(response.data[i].latitude);
-        longitude.push(response.data[i].longitude);
+        applicant.push(post_data[i].applicant);
+        latitude.push(post_data[i].latitude);
+        longitude.push(post_data[i].longitude);
       //  cpu_util.push(response.data[i].cpu_util);
       //  date_time.push(response.data[i].date_time);
       //alert(response.data[i].latitude[i]);
