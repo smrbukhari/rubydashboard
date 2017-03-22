@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   get 'plotly_line_api' => 'demo#line_chart_data'
   get 'plotly_map_api' => 'demo#map_data'
   get 'headers' => 'analytics#data_values'
+  post 'upload' => 'analytics#data_upload'
 
 
   # Example of regular route:

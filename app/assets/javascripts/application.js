@@ -15,4 +15,5 @@
 //= require turbolinks
 //= require Chart.bundle
 //= require chartkick
+//= require bootstrap-sprockets
 //= require_tree .

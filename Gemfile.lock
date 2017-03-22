@@ -184,6 +184,7 @@ DEPENDENCIES
   groupdate
   jbuilder (~> 2.0)
   jquery-rails
+  mongo (~> 2.4)
   mongoid
   pg
   rails (= 4.2.6)

@@ -38,6 +38,8 @@ gem 'mongoid'
 
 gem 'bson_ext'
 
+gem 'mongo', '~> 2.4'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

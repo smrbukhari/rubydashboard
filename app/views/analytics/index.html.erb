@@ -1,12 +1,3 @@
-
-<div class="size">
-  <input type="text" name="test" value="choose your size" class="field" readonly="readonly" />
-  <ul class="list">
-    <li>Send to Column(Longitude)</li>
-    <li>Send to Row(Latitude)</li>
-  </ul>
-</div>
-
 <!--  -->
 <%= render 'analytics/analytics_navbar' %>
 
@@ -60,15 +51,18 @@
         </div>
         </li>
         <li class="list-group-item">Measure</li>
-        <li class="list-group-item">Fourth item</li>
         </ul>
          </div> 
         </div>
         <div class="col-sm-6">
 
             <div class="row col_row">
-            <div class="row col_row"><div class="col" style="width: 100%; height: 25px;   border-bottom: 1px solid #DDDDDD;">test col</div></div>
-            <div class="row col_row"><div class="col" style="width: 100%; height: 25px;   border-bottom: 1px solid #DDDDDD;">test row</div></div>
+            <div class="row col_row">
+            <div class="col-sm-1" style="height: 25px; width: 80px; margin-right: 5px; border-right: 1px solid #DDDDDD; padding-left: 0px; padding-right: 2px; "><i class="glyphicon glyphicon-list icon-flipped" style="margin-right: 5px;"></i>Column:</div>
+            <div class="col data_col" style="width: 100%; height: 25px;   border-bottom: 1px solid #DDDDDD;"><p style="color: gray;">Select Column Data</p></div></div>
+            <div class="row col_row">
+            <div class="col-sm-1" style="height: 25px; width: 80px; margin-right: 5px; border-right: 1px solid #DDDDDD; padding-left: 0px; padding-right: 0px; "><i class="glyphicon glyphicon-list" style="margin-right: 5px;"></i>Row:</div>
+            <div class="col data_row" style="width: 100%; height: 25px;   border-bottom: 1px solid #DDDDDD;"><p style="color: gray;">Select Row Data</p></div></div>
 
           </div>
           <div class="row col_row">
@@ -107,5 +101,12 @@
     </div>
     </div>
 </div>
+
+<!--  Data selection Popup Div html -->
+
+  <ul class="list-popup">
+    <li id="s2col" >Send to Column(Longitude)</li>
+    <li id="s2row" >Send to Row(Latitude)</li>
+  </ul>
 
 
