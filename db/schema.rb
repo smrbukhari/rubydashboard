@@ -11,10 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170127071828) do
+ActiveRecord::Schema.define(version: 20170326180210) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "mongobicollections", force: :cascade do |t|
+    t.string   "collectionname"
+    t.string   "type_collection"
+    t.integer  "user_id"
+    t.string   "db_name"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
 
   create_table "sysmon_tests", force: :cascade do |t|
     t.datetime "date_time"

@@ -1,4 +1,4 @@
-    <nav class="navbar navbar-default navbar-xs" role="navigation">
+    <nav class="navbar navbar-toggleable-xs navbar-light bg-faded" role="navigation">
   <!-- Brand and toggle get grouped for better mobile display -->
   <div class="navbar-header">
     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -7,20 +7,27 @@
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
     </button>
-    <a class="navbar-brand" href="#"><b>Tiny</b> Navbar</a>
+    <a class="navbar-brand" href="#"><b>Options</b></a>
   </div>
 
   <!-- Collect the nav links, forms, and other content for toggling -->
   <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
     <ul class="nav navbar-nav">
-      <li><a href="#"><i title="undo" class="glyphicon glyphicon-arrow-left"></i></a></li>
-      <li><a href="#"><i title="redo" class="glyphicon glyphicon-arrow-right"></i></a></li>
-      <li><a href="#"><i title="refresh" class="glyphicon glyphicon-refresh"></i></a></li>
-      <li><a href="#"><i title="download" class="glyphicon glyphicon-download"></i></a></li>
-      <li><a data-toggle="modal" data-target="#myModal" ><i title="upload" id= "upload" class="glyphicon glyphicon-upload" ></i></a></li>
-      <li><a href="#"><i title="switch column to row" class="glyphicon glyphicon-sort"></i></a></li>
-      <li><a href="#"><i title="add Header" class="glyphicon glyphicon-header"></i></a></li>
-      <li><a href="#"><i title="Publish" class="glyphicon glyphicon-share"></i></a></li>
+      <li><a href="#"><i title="undo" class="glyphicon glyphicon-arrow-left" id="nav-glyph"></i><br>Undo</a></li>
+      <li><a href="#"><i title="redo" class="glyphicon glyphicon-arrow-right"></i><br>Redo</a></li>
+      <li><a href="#"><i title="refresh" class="glyphicon glyphicon-refresh"></i><br>Refresh</a></li>
+      <li><a href="#"><i title="download" class="glyphicon glyphicon-download"></i><br>Download</a></li>
+      <li><a data-toggle="modal" data-target="#myModal" ><i title="Import" id= "upload" class="glyphicon glyphicon-upload" ></i><br>Import</a></li>
+
+      <li><a id= "viewdata" data-toggle="modal" data-target="#viewModal" ><i title="View Data" id= "view_data" class="glyphicon glyphicon-open-file" ></i><br>View Data</a></li>
+
+      <li><a id= "viewjson" data-toggle="modal" data-target="#jsonModal" ><i title="View JSON" id= "view_json" class="glyphicon glyphicon-file"></i><br>View JSON</a></li>
+
+      <li><a id= "addcol" data-toggle="modal" data-target="#columnModal" ><i title="Add Column" id= "add_col" class="glyphicon glyphicon-plus"></i><br>Add Column</a></li>
+
+      <li><a href="#"><i title="Switch Row to Column" class="glyphicon glyphicon-sort"></i><br>Switch(Row to Column)</a></li>
+      <li><a href="#"><i title="Add Header" class="glyphicon glyphicon-header"></i><br>Header</a></li>
+      <li><a href="#"><i title="Publish" class="glyphicon glyphicon-share"></i><br>Publish</a></li>
       <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b></a>
         <ul class="dropdown-menu">
@@ -41,7 +48,7 @@
   Launch demo modal
 </button> -->
 
-<!-- Modal -->
+<!-- Modal Import-->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -63,8 +70,68 @@
         <label class="btn btn-primary btn-file" >
        Upload  <input type="file" name="file" id="file" accept=".csv,.txt,.json" style="display: none;" />
     </label>
+    <p id="db_exists_err" style="color: red; padding-top: 5px; display: none;">Database collection name already exists!</p>
       </div>
     </div>
   </div>
 </div>
 
+<!-- Modal View Data-->
+<div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document" style="min-width: 900px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="exampleModalLabel"></h4>
+
+    <div id="tableDiv" class="display" style="width:100%; overflow-x: auto;"> 
+    </div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal View JSON-->
+<div class="modal fade" id="jsonModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document" style="min-width: 900px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="exampleModalLabel"></h4>
+
+        <div id="jsonDiv" class="display"> </div>
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Add Column-->
+<div class="modal fade" id="columnModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document" style="min-width: 900px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="exampleModalLabel"></h4>
+        <div id="addColDiv" style="width:100%; overflow-x: auto;"> 
+    </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+</div>

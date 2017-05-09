@@ -15,6 +15,10 @@ Rails.application.routes.draw do
   get 'plotly_line_api' => 'demo#line_chart_data'
   get 'plotly_map_api' => 'demo#map_data'
   get 'headers' => 'analytics#data_values'
+  get 'displaydata' => 'analytics#data_display'
+  get 'displayjson' => 'analytics#json_display'
+  get 'addcolumn' => 'analytics#add_column'
+  get 'getcolumn' => 'analytics#get_columns'
   post 'upload' => 'analytics#data_upload'
 
 

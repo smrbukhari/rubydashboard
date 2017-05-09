@@ -40,6 +40,10 @@ gem 'bson_ext'
 
 gem 'mongo', '~> 2.4'
 
+gem 'jquery-datatables-rails', '~> 3.4.0'
+
+#gem 'byebug', '~> 9.0', '>= 9.0.5'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

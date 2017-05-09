@@ -1,22 +1,37 @@
 // Top icon navbar
 
 
-.navbar-xs { 
+.navbar-toggleable-xs { 
 min-height: 25px !important;
-height:25px; 
+height:38px; 
 border-radius:0;
 margin-right:none !important;
 margin-left:none !important;
-background-color: #b3c0e0 !important;
+background-color: #e3e4e9 !important;
+font-size: 12px;
+color: #333333 !important;
 } 
-.navbar-xs .navbar-brand{ 
-padding: 2px 8px;font-size: 10px;line-height: 10px;
+.navbar-toggleable-xs .navbar-brand{ 
+padding: 15px 8px;
+font-size: 14px;
+line-height: 5px;
+color: #333333 !important;
  } 
-.navbar-xs .navbar-nav > li > a { 
+.navbar-toggleable-xs .navbar-nav > li > a { 
 border-right:1px solid #ddd; 
+border-bottom:1px solid #ddd;
 padding-top: 2px; 
 padding-bottom: 2px; 
 line-height: 10px;
+color: #333333 !important;
+cursor: pointer;
+cursor: hand;
+ }
+
+.navbar-toggleable-xs .navbar-nav > li > a > i {
+ display: block;
+ text-align: center;
+ color: #333333 !important;
  }
 
 
@@ -270,4 +285,9 @@ ul.list-popup li:last-child { border:none }
     -moz-transform: rotate(90deg);
     -webkit-transform: rotate(90deg);
     -ms-transform: rotate(90deg);
+}
+
+.alert {
+  padding: 10px !important;
+  margin-bottom: 0px !important;
 }
