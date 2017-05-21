@@ -23,7 +23,7 @@
 
       <li><a id= "viewjson" data-toggle="modal" data-target="#jsonModal" ><i title="View JSON" id= "view_json" class="glyphicon glyphicon-file"></i><br>View JSON</a></li>
 
-      <li><a id= "addcol" data-toggle="modal" data-target="#columnModal" ><i title="Add Column" id= "add_col" class="glyphicon glyphicon-plus"></i><br>Add Column</a></li>
+      <li><a id= "getcol" data-toggle="modal" data-target="#columnModal" ><i title="Add Column" id= "get_col" class="glyphicon glyphicon-plus"></i><br>Add Column</a></li>
 
       <li><a href="#"><i title="Switch Row to Column" class="glyphicon glyphicon-sort"></i><br>Switch(Row to Column)</a></li>
       <li><a href="#"><i title="Add Header" class="glyphicon glyphicon-header"></i><br>Header</a></li>
@@ -124,10 +124,14 @@
   <div class="modal-dialog" role="document" style="min-width: 900px">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="exampleModalLabel"></h4>
-        <div id="addColDiv" style="width:100%; overflow-x: auto;"> 
-    </div>
+      <div class="addcolmodal">
+        <h4 class="modal-title" id="exampleModalLabel">Enter Column Name: <input id="newcolname" type="text" name="ColumnName"><br></h4>
+
+              <div id="addColDiv" style="width:100%; overflow-x: auto;"> </div>
+      </div>
       <div class="modal-footer">
+      <button id="emptyColButton" type="button" class="btn btn-secondary">Insert Empty Column</button>
+      <button id="addColButton" type="button" class="btn btn-secondary">Add Column</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         
       </div>

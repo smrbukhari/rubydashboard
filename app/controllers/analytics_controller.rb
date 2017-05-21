@@ -282,17 +282,100 @@ class AnalyticsController < ApplicationController
 							}
 		    client = Mongo::Client.new(client_host, client_options)
 		    
-		    viewcollection = params["lastcollection"]
+		    viewcollection = params["collectionname"]
 		    viewdata = params["file"]
+		    columnname = params["nameofcolumn"]
+		    operatorused = params["mathoperator"]
+		    firstcolumn = params["columnone"]
+		    secondcolumn = params["columntwo"]
+
+            first_value = 0
+            second_value = 0
+            third_value = 0
 
 		    client[viewcollection].find().each do |document| 
 
-		   	client[viewcollection].update_one({:_id => document["_id"]}, '$set' => {:sum => "200000"})
+
+		    document.each do |key, value|
+
+			    if key == firstcolumn
+
+			    	first_value = Float(value)
+
+			    end
+
+			    if key == secondcolumn
+
+			    	second_value = Float(value) # toconvert string into float
+
+			    end
+			
+			end
+
+			if operatorused == "+"
+				
+				third_value = first_value + second_value # addition
+
+			elsif operatorused == "-"
+
+				third_value = first_value - second_value # subtraction
+
+			elsif operatorused == "*"
+
+				third_value = first_value * second_value # multiplication
+
+			elsif operatorused == "/"
+
+				third_value = first_value / second_value # division		
+					
+			end
+		   	
+		   	client[viewcollection].update_one({:_id => document["_id"]}, '$set' => {columnname => third_value})
 
 		    end
-		    render json: {success: "column added successfully"}, status:200
+		    render json: {success: "column added successfully" }, status:200
 
 			end
+
+
+			def add_emptycolumn
+
+			temp_array = []
+			key_array = []
+			client_host = ['localhost:27017']
+			client_options = {
+	  				database: 'development',
+	  				user: 'mydbuser',
+	  				password: 'dbuser'
+							}
+		    client = Mongo::Client.new(client_host, client_options)
+		    
+		    viewcollection = params["collectionname"]
+		    viewdata = params["file"]
+		    columnname = params["nameofcolumn"]
+		    #operatorused = params["mathoperator"]
+		    #firstcolumn = params["columnone"]
+		    #secondcolumn = params["columntwo"]
+
+            #first_value = 0
+            #second_value = 0
+            third_value = ""
+
+		    client[viewcollection].find().each do |document| 
+
+
+		    #document.each do |key, value|
+		    #end
+		   	
+		   	client[viewcollection].update_one({:_id => document["_id"]}, '$set' => {columnname => third_value})
+
+		    end
+		    render json: {success: "empty column added successfully" }, status:200
+
+			end
+
+
+
 
 			def get_columns
 			    qq = params["collectionname"]
@@ -319,10 +402,16 @@ class AnalyticsController < ApplicationController
 			    rr = JSON.parse(rr)
 
 				ss = []
+
 			    rr.each do |key, value|
+
+			    	if is_number?(value) 
+			      
 			      #ss << value.class.name
 			     
 			        ss << key 
+
+			      end # end for if
 			      
 			    end
 
@@ -335,6 +424,10 @@ class AnalyticsController < ApplicationController
 			end
 
 
+
+			def is_number? string
+				 	true if Float(string) rescue false
+			end
 
 			  private
 			 

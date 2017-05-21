@@ -3,6 +3,7 @@ var popup;
 var dataid;
 var dataid_name;
 var lastcollection_name;
+var columndata;
 
 
 $(window).load(function () {
@@ -187,9 +188,9 @@ else{
           });// closing view_json button click 
 
 
-    $('#addcol').on('click',function(){
+    $('#getcol').on('click',function(){
 
-
+        $('#newcolname').val("");
 
         $.ajax({
         url: "/getcolumn?collectionname=" + lastcollection_name,
@@ -201,19 +202,21 @@ else{
 
         var data = response; 
 
-        var text = '<select>';
+        columndata = data;  
+
+        var text = '<select id="col_one">';
         for(count = 0; count < data.length; count++){
            text += '<option value='+data[count]+'>'+data[count]+'</option>' 
             }
         text += '</select>';   
-        text += '<select>';
+        text += '<select id="math_opr">';
         text += '<option value="+">+</option>'
         text += '<option value="-">-</option>'
         text += '<option value="*">*</option>'
         text += '<option value="/">/</option>'
         text += '</select>'; 
 
-        text += '<select>';
+        text += '<select id="col_two">';
         for(count = 0; count < data.length; count++){
            text += '<option value='+data[count]+'>'+data[count]+'</option>' 
             }
@@ -232,6 +235,76 @@ else{
 
           }); //closing ajax
           });// closing view_json button click 
+
+
+              $("#newcolname").on('change keyup paste', function() {
+
+                  if  ($.inArray($("#newcolname").val(),columndata) >= 0)
+                {
+                    
+
+                  $('#addColButton').text('Update Column');
+                  //  console.log("succ matched");
+
+                }
+
+                else {
+
+                  $('#addColButton').text('Add Column');
+                }
+                //console.log(columndata);
+            });
+
+
+
+
+    $('#addColButton').on('click',function(){
+
+        $.ajax({
+        url: "/addcolumn?collectionname=" + lastcollection_name + "&nameofcolumn=" + $('#newcolname').val() + "&columnone=" +  $('#col_one').find(":selected").text() + "&mathoperator=" + $('#math_opr').find(":selected").text() + "&columntwo=" + $('#col_two').find(":selected").text(),
+        type: "get",
+        datatype: "json",
+     //   data: JSON.stringify(data),
+     //   headers: {"content-type": "application/json"},
+        success: function (response) {
+
+            
+          
+          $('#columnModal').modal('toggle');
+          
+          }, //succes closing
+
+            error: function (response){
+
+              }
+
+          }); //closing ajax
+          });// closing addColButton button click 
+
+
+      $('#emptyColButton').on('click',function(){
+
+        $.ajax({
+        url: "/addemptycolumn?collectionname=" + lastcollection_name + "&nameofcolumn=" + $('#newcolname').val(),
+        type: "get",
+        datatype: "json",
+     //   data: JSON.stringify(data),
+     //   headers: {"content-type": "application/json"},
+        success: function (response) {
+
+            
+          
+          $('#columnModal').modal('toggle');
+          
+          }, //succes closing
+
+            error: function (response){
+
+              }
+
+          }); //closing ajax
+          });// closing addColButton button click 
+
 
 
 

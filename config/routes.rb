@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   get 'displaydata' => 'analytics#data_display'
   get 'displayjson' => 'analytics#json_display'
   get 'addcolumn' => 'analytics#add_column'
+  get 'addemptycolumn' => 'analytics#add_emptycolumn'
   get 'getcolumn' => 'analytics#get_columns'
   post 'upload' => 'analytics#data_upload'
 
