@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   get 'addcolumn' => 'analytics#add_column'
   get 'addemptycolumn' => 'analytics#add_emptycolumn'
   get 'getcolumn' => 'analytics#get_columns'
+  get 'usercollection' => 'analytics#user_collection'
   post 'upload' => 'analytics#data_upload'
 
 

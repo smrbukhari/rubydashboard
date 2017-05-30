@@ -1,3 +1,9 @@
+//notes: 
+// html class cam be called using $(".class") and id can be called using $("#id")
+// ajax can be used to exchange data with the server and updating parts of web pages 
+// without reloading the web page
+// this javascript contains front-end code for BI Analytics Application
+
 //global variables
 var popup;
 var dataid;
@@ -6,42 +12,38 @@ var lastcollection_name;
 var columndata;
 
 
-$(window).load(function () {
-
-	$('#plLineDiv').css('display', 'none');
+$(window).load(function (){
+	$('#plLineDiv').css('display','none');
  	//$('#mapid').css('display', 'none');
-
-	
 });
-$(document).ready(function () {
-popup = 0;
-
-var values = [];
-$('#dropdown option').each(function() { 
-    values.push( $(this).attr('value') );
-});
-	
-
-$('#dropdown').on('change',function () {
-
-var i;
-for (i = 0; i < values.length; ++i) {
-    $('#' + values[i]).css('display','none');
-}
-
-if(this.value == 'mapid'){
-	$('.col-sm-6').append("<div id='mapid'></div>");
-	geo_function();
-}
-else{
-	$('#mapid').remove();
- 	rem_map();
-	$('#' + this.value).css('display', 'block'); //main code to switch between graphs
- 	plotly_function();
-}		
 
 
-});         //class needs a . and id needs a #
+  // ******************* (document).ready opening *******************
+  $(document).ready(function (){
+    popup = 0;
+    var values = [];
+    $('#dropdown option').each(function() { 
+        values.push( $(this).attr('value') );
+    });
+
+
+    $('#dropdown').on('change',function(){
+      var i;
+      for (i = 0; i < values.length; ++i){
+          $('#' + values[i]).css('display','none');
+      }
+
+      if(this.value == 'mapid'){
+      	$('.col-sm-6').append("<div id='mapid'></div>");
+      	geo_function();
+        }
+      else{
+      	$('#mapid').remove();
+       	rem_map();
+      	$('#' + this.value).css('display', 'block'); //main code to switch between graphs
+       	plotly_function();
+      }		
+    });  //closing dropdown change 
 
 	
 		$('#data').addClass("active"); // to make Data active on document ready
@@ -49,351 +51,270 @@ else{
 
 		// Tab Javascript - Data
 		$('#data_tab').on('click',function () {
-		$('#data').addClass("active");
-		$('#data_tab').addClass("active");
-		$('#analytics_tab').removeClass("active");
-		$('#analytics').removeClass("active");
-	}); //closing data
+  		$('#data').addClass("active");
+  		$('#data_tab').addClass("active");
+  		$('#analytics_tab').removeClass("active");
+  		$('#analytics').removeClass("active");
+	   }); //closing data
 
-	// Tab Javascript - Analytics
-	$('#analytics_tab').on('click',function () {
-		$('#analytics').addClass("active");
-		$('#analytics_tab').addClass("active");
-		$('#data_tab').removeClass("active");
-		$('#data').removeClass("active");
-	}); //closing analytics
+  	// Tab Javascript - Analytics
+  	$('#analytics_tab').on('click',function () {
+  		$('#analytics').addClass("active");
+  		$('#analytics_tab').addClass("active");
+  		$('#data_tab').removeClass("active");
+  		$('#data').removeClass("active");
+  	}); //closing analytics
 
 
-	// Slider Opacity
-	$('#opacity-slider').slider({
-		formatter: function(value) {
-			return 'Current value: ' + value;
-		}
-	});
+  	// Slider Opacity
+  	$('#opacity-slider').slider({
+  		formatter: function(value) {
+  			return 'Current value: ' + value;
+  		}
+  	});
  	
- 	//Slider Date Picker
-	$("#date_picker").slider({});
+   	//Slider Date Picker
+  	$("#date_picker").slider({
+    });
 
 
-			//$('.size').styleddropdown();
+		//$('.size').styleddropdown();
+    $("#loadcollection").on('click',function () {
 
-		 //code for upload dialog box 
-			$('#file').on('change',function () {
-			
-		   		//alert("test");
-
-		   		var data = new FormData(); //only data is passed through ajax
-        		data.append("file", $("#file")[0].files[0]); //create key value pair (file, file_data)
-        		data.append("name", $("#mycollection").val());
-
-        			$.ajax({
-            		url: "/upload",
-           			type: "post",
-            		cache: false,
-            		data: data,
-            		dataType: 'json',
-            		processData: false, // Don't process the files
-            		contentType: false,
-            		success: function (response) {
-                
-                  tree_plantation (response.success)
-
-                    lastcollection_name = response.success;
-
-            			},
+      tree_plantation ($("#select_collection option:selected").val());
+      lastcollection_name = $("#select_collection option:selected").val();  
+    });  //closing for load previous collectiom
 
 
-           			error: function (response) {
+	  //code for upload dialog box 
+		$('#file').on('change',function () {
 
+   		var data = new FormData(); //only data is passed through ajax
+  		data.append("file", $("#file")[0].files[0]); //create key value pair (file, file_data)
+  		data.append("name", $("#mycollection").val());
 
-                  /*var myresp = response;
-                  var win=window.open('about:blank');
+			$.ajax({
+    		url: "/upload",
+   			type: "post",
+    		cache: false,
+    		data: data,
+    		dataType: 'json',
+    		processData: false, // Don't process the files
+    		contentType: false,
+    		success: function (response) {
+                 
+            tree_plantation (response.success);
+            lastcollection_name = response.success;
+            $('#mycollection').val("");
+        },
+   			error: function (response) {
 
-                  with(win.document)
-                  {
-                    open();
-                    write(response);
-                    close();
-                  }
-                  */
-                    if(response.responseText == '{"error":"collection_exists"}')
-
-                    {
-
-                      $('#db_exists_err').show();
-
-                    }; //if closing
-
-
-
-            			}
-        }); //ajax closing
+            if(response.responseText == '{"error":"collection_exists"}')
+            {
+              $('#db_exists_err').show();
+            }; //if closing
+        }
+      }); //ajax closing
    		
-   		 	}); //file change closing 
+   	}); //file change closing 
 
     // Code for send to row and send to col data transfer to div
-			$('#s2col').on('click',function (event) {				
-				//alert(dataid);
-				dataid_name = dataid.name;
-				$('.data_col').empty().append("<div><div class='btn-info' style='display: inline-block; border-radius: 5px; font-weight:bold; '> " + dataid.name + "<span id="+ dataid.name +" onclick='doFunction("+ dataid.name +");' style='display: inline-block; border-radius: 5px; font-weight:bold; margin-left: 5px; cursor: pointer; cursor: hand;'>&#10006;</span></div></div>");
-    			}); // closing for s2col
-   			$('#s2row').on('click',function (event) {
-   				dataid_name = dataid.name;				
-				$('.data_row').empty().append("<div><div class='btn-info' style='display: inline-block; border-radius: 5px; font-weight:bold; '> " + dataid.name + "<span id="+ dataid.name +" onclick='doFunction("+ dataid.name +");' style='display: inline-block; border-radius: 5px; font-weight:bold; margin-left: 5px; cursor: pointer; cursor: hand;'>&#10006;</span></div></div>");
-    			}); // closing for s2row
-		
-   			//$('#dataid_name')
+		$('#s2col').on('click',function (event) {				
+			dataid_name = dataid.name;
+			$('.data_col').empty().append("<div><div class='btn-info' style='display: inline-block; border-radius: 5px; font-weight:bold; '> " + dataid.name + "<span id="+ dataid.name +" onclick='doFunction("+ dataid.name +");' style='display: inline-block; border-radius: 5px; font-weight:bold; margin-left: 5px; cursor: pointer; cursor: hand;'>&#10006;</span></div></div>");
+    }); // closing for s2col
 
-         $('#viewdata').on('click',function(){
+		$('#s2row').on('click',function (event) {
+			dataid_name = dataid.name;				
+		  $('.data_row').empty().append("<div><div class='btn-info' style='display: inline-block; border-radius: 5px; font-weight:bold; '> " + dataid.name + "<span id="+ dataid.name +" onclick='doFunction("+ dataid.name +");' style='display: inline-block; border-radius: 5px; font-weight:bold; margin-left: 5px; cursor: pointer; cursor: hand;'>&#10006;</span></div></div>");
+		}); // closing for s2row
+		  			
 
-          $('#tableDiv').html( '<table id="example" class="display" cellspacing="0"></table>' );
-          $.ajax( {
-              "url": 'http://localhost:3000/displaydata?lastcollection=' + lastcollection_name,
-              "success": function ( json ) {
-                  $('#example').dataTable(json);
-              },
-              "dataType": "json"
-       /* initialized in the back-end:
-           buttons: [
-            
-            'excelHtml5',
-            'csvHtml5',
-            'pdfHtml5'
-        ]*/
-          } ); // closing table Div
+    $('#viewdata').on('click',function(){
+      $('#tableDiv').html('<table id="example" class="display" cellspacing="0"></table>');
+        $.ajax({
+          "url": 'http://localhost:3000/displaydata?lastcollection=' + lastcollection_name,
+          "success": function (json){
+            $('#example').dataTable(json);
+          },
+          "dataType": "json"
+        }); // closing ajax under table div
+    });// closing view_data button click  
 
-          });// closing view_data button click  
-
-      $('#viewjson').on('click',function(){
-
-          $.ajax({
-          url: '/displayjson?lastcollection=' + lastcollection_name,
-          type: "get",
-          datatype: "json",
-     
-              success: function (response) {
-
-                //alert("OK");
-               // $('#jsonDiv').append(response);
-               $('#jsonDiv').jsonViewer(response);
-               }, //succes closing
-
-
-
-              error: function (response){
-
-                }
-
-            }); // closing ajax inside viewjson Modal
-          });// closing view_json button click 
+    $('#viewjson').on('click',function(){
+      $.ajax({
+        url: '/displayjson?lastcollection=' + lastcollection_name,
+        type: "get",
+        datatype: "json",
+        success: function(response){
+         $('#jsonDiv').jsonViewer(response);
+         }, //succes closing
+        error: function(response){
+        }
+      }); // closing ajax inside viewjson Modal
+    });// closing view_json button click 
 
 
     $('#getcol').on('click',function(){
-
-        $('#newcolname').val("");
-
-        $.ajax({
+      $('#newcolname').val("");
+      $.ajax({
         url: "/getcolumn?collectionname=" + lastcollection_name,
         type: "get",
         datatype: "json",
-     //   data: JSON.stringify(data),
-     //   headers: {"content-type": "application/json"},
         success: function (response) {
-
-        var data = response; 
-
-        columndata = data;  
-
-        var text = '<select id="col_one">';
-        for(count = 0; count < data.length; count++){
-           text += '<option value='+data[count]+'>'+data[count]+'</option>' 
+          var data = response; 
+          columndata = data;  
+          var text = '<div class="col-sm-4"><select style="float: left;width: 250px;height: 40px;font-size: 16px;text-align: left;display: inline;" id="col_one">';
+          text += '<option  disabled selected>Select First Column</option>'
+          for(count = 0; count < data.length; count++){
+             text += '<option value='+data[count]+'>'+data[count]+'</option>' 
             }
-        text += '</select>';   
-        text += '<select id="math_opr">';
-        text += '<option value="+">+</option>'
-        text += '<option value="-">-</option>'
-        text += '<option value="*">*</option>'
-        text += '<option value="/">/</option>'
-        text += '</select>'; 
-
-        text += '<select id="col_two">';
-        for(count = 0; count < data.length; count++){
-           text += '<option value='+data[count]+'>'+data[count]+'</option>' 
+          text += '</select></div>';   
+          text += '<div class="col-sm-4"><select id="math_opr" style="float: left;width: 250px;height: 40px;font-size: 16px;text-align: left;display: inline;">';
+          text += '<option  disabled selected>Select Operator</option>'
+          text += '<option value="add">+</option>'
+          text += '<option value="subtract">-</option>'
+          text += '<option value="multiply">*</option>'
+          text += '<option value="divide">/</option>'
+          text += '</select></div>'; 
+          text += '<div class="col-sm-4"><select style="float: left;width: 250px;height: 40px;font-size: 16px;text-align: left;display: inline;" id="col_two">';
+          text += '<option  disabled selected>Select Second Column</option>'
+          for(count = 0; count < data.length; count++){
+             text += '<option value='+data[count]+'>'+data[count]+'</option>' 
             }
-        text += '</select>';     
+          text += '</select></div>';     
 
-        $('#addColDiv').html(text);
-            
-          
+          $('#addColDiv').html(text);
           //$('#columnModal').modal('toggle');
-          
-          }, //succes closing
+        }, //succes closing
+        error: function (response){  
+        }
+      }); //closing ajax
+    });// closing view_json button click 
 
-            error: function (response){
+    //routine to update column button from add --> update 
+    $("#newcolname").on('change keyup paste', function(){
+      if($.inArray($("#newcolname").val(),columndata) >= 0){
+        $('#addColButton').text('Update Column');
+        //  console.log("succ matched");
+      }
+      else{
+      $('#addColButton').text('Add Column');
+      }
+      //console.log(columndata);
+    });
 
-              }
-
-          }); //closing ajax
-          });// closing view_json button click 
-
-
-              $("#newcolname").on('change keyup paste', function() {
-
-                  if  ($.inArray($("#newcolname").val(),columndata) >= 0)
-                {
-                    
-
-                  $('#addColButton').text('Update Column');
-                  //  console.log("succ matched");
-
-                }
-
-                else {
-
-                  $('#addColButton').text('Add Column');
-                }
-                //console.log(columndata);
-            });
-
-
-
-
+    //routine to Add Column to all documents in the table/collection
     $('#addColButton').on('click',function(){
-
-        $.ajax({
-        url: "/addcolumn?collectionname=" + lastcollection_name + "&nameofcolumn=" + $('#newcolname').val() + "&columnone=" +  $('#col_one').find(":selected").text() + "&mathoperator=" + $('#math_opr').find(":selected").text() + "&columntwo=" + $('#col_two').find(":selected").text(),
+      $.ajax({
+        url: "/addcolumn?collectionname=" + lastcollection_name + "&nameofcolumn=" + $('#newcolname').val() + "&columnone=" +  $('#col_one').find(":selected").text() + "&mathoperator=" + $('#math_opr').find(":selected").val() + "&columntwo=" + $('#col_two').find(":selected").text(),
         type: "get",
         datatype: "json",
-     //   data: JSON.stringify(data),
-     //   headers: {"content-type": "application/json"},
-        success: function (response) {
+        //   data: JSON.stringify(data),
+        //   headers: {"content-type": "application/json"},
+        success: function (response){  
+          tree_plantation (lastcollection_name); 
+          $('#columnModal').modal('hide'); //use hide instead of toggle 
+        }, //succes closing
+        error: function (response){
+        }
 
-            
-          
-          $('#columnModal').modal('toggle');
-          
-          }, //succes closing
+      }); //closing ajax
+    });// closing addColButton button click 
 
-            error: function (response){
-
-              }
-
-          }); //closing ajax
-          });// closing addColButton button click 
-
-
-      $('#emptyColButton').on('click',function(){
-
-        $.ajax({
+    //routine to Add Empty Column to all documents in the table/collection
+    $('#emptyColButton').on('click',function(){
+      $.ajax({
         url: "/addemptycolumn?collectionname=" + lastcollection_name + "&nameofcolumn=" + $('#newcolname').val(),
         type: "get",
         datatype: "json",
-     //   data: JSON.stringify(data),
-     //   headers: {"content-type": "application/json"},
-        success: function (response) {
+        //   data: JSON.stringify(data),
+        //   headers: {"content-type": "application/json"},
+        success: function (response){ 
+          tree_plantation (lastcollection_name);
+          $('#columnModal').modal('hide'); //use hide instead of toggle   
+        }, //succes closing
 
-            
-          
-          $('#columnModal').modal('toggle');
-          
-          }, //succes closing
+        error: function (response){
+        }
 
-            error: function (response){
+      }); //closing ajax
+    });// closing addColButton button click 
 
-              }
+    $('#importbutton').on('click',function(){
+      $.ajax({
+        url: "/usercollection",
+        type: "get",
+        datatype: "json",
+        //   data: JSON.stringify(data),
+        //   headers: {"content-type": "application/json"},
+        success: function (response){
+         // console.log(response);
+         var text1 = '<select style="float: left;width: 190px;height: 32px;font-size: 16px;text-align: left;display: inline;margin-top: 10px;" id="select_collection"><option disabled="" selected="">Select Previous Table</option>'
+         for(count = 0; count < response.length; count++){
+           text1 += '<option value='+response[count]+'>'+response[count]+'</option>' 
+          }
+         text1 += '</select>';    
+         $('#showcollection').html(text1);
+         $('#mycollection').val("");
+        }, //success closing
 
-          }); //closing ajax
-          });// closing addColButton button click 
-
-
-
-
-}); //document ready closing
+        error: function (response){
+        } //error closing
+      }); //closing ajax
+    }); 
+  }); // *******************document ready closing*******************
 	
 
-  
-  		function doFunction(ele) {
-
+    // function to remove colsest div used in send2col and send2row 
+  	function doFunction(ele){
   			//alert(ele);
   			ele.closest("div").remove();
-
-  		};
+  	};
 
 	
 
-  function tree_plantation (collectionname) {
-
-
-    $.ajax({
-    url: "/headers?collectionname=" + collectionname,
-    type: "get",
-    datatype: "json",
- //   data: JSON.stringify(data),
- //   headers: {"content-type": "application/json"},
-    success: function (response) {
-
-      //alert(response);
-      // code to generate data tree
-      $('#tree1').empty(); //to clear the div
-      var data = response[0];
-      
-      $('#tree1').tree();  //resolves refresh issue for the tree
-
-      $('#tree1').tree('loadData',data );   //loadData loads data in the empty tree
-           // data: response[0] //previous method before loadData
-        
-
-        $('#tree1').bind(
-        'tree.click',
-        function(event) {
-        //  alert(event.node.element.offsetTop); // to get the top position on click
-      //  popup= 1;
-        if (event.node.children.length == 0)
-        {
-        $('.list-popup').css('top', event.node.element.offsetTop + "px");
-          // The clicked node is 'event.node'
-          event.stopPropagation();
-          var node = event.node;
-          dataid = event.node;
-          //alert(node.name);
-          $('.list-popup').fadeIn(400, function(){
-            popup = 1;  
-          });
-          } //closing if
-    }); //bind closing
-
-
-      
-      $(window).click(function(event) { //keypress event, fadeout on 'escape'
-        
-    if(popup == 1){
-  
-      $('.list-popup').fadeOut(400, function(){
-        popup = 0;
-      });
-    }
-
-    }); //function after window.click closing
-        
-
-
-      
-      $('#myModal').modal('toggle');
-
-      
-      
-      }, //succes closing
-
-
-
-    error: function (response){
-
-      }
-
-  }); // ajax inside tree plantation closing
-
-
-  }	//function tree plantation closing
+    function tree_plantation (collectionname){
+      $.ajax({
+        url: "/headers?collectionname=" + collectionname,
+        type: "get",
+        datatype: "json",
+        //   data: JSON.stringify(data),
+        //   headers: {"content-type": "application/json"},
+        success: function (response){
+          // code to generate data tree
+          $('#tree1').empty(); //to clear the div
+          var data = response[0];
+          $('#tree1').tree();  //resolves refresh issue for the tree
+          $('#tree1').tree('loadData',data );   //loadData loads data in the empty tree
+               // data: response[0] //previous method before loadData
+          $('#tree1').bind('tree.click',function(event){
+            if (event.node.children.length == 0){
+              $('.list-popup').css('top', event.node.element.offsetTop + "px");
+              // The clicked node is 'event.node'
+              event.stopPropagation();
+              var node = event.node;
+              dataid = event.node;
+              //alert(node.name);
+              $('.list-popup').fadeIn(400, function(){
+                popup = 1;  
+              });
+            } //closing if
+          }); //bind closing
+          // add description for window click
+          $(window).click(function(event) { //keypress event, fadeout on 'escape'  
+            if(popup == 1){
+             $('.list-popup').fadeOut(400, function(){
+                popup = 0;
+              });
+            } // if closing
+          }); //function after window.click closing            
+          $('#myModal').modal('hide');
+        }, //succes closing
+        error: function (response){  
+        }
+      }); // ajax inside tree plantation closing
+    }	//function tree plantation closing
 
   
 

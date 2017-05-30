@@ -10,12 +10,9 @@ class AnalyticsController < ApplicationController
 		@first_value = Tweet.first #use @ when variable used in page or by child objects
 		@headers = @first_value.attributes.keys
 		@test_array = []
-		@test = SysmonTest.select('cpu_util, cpu_idle, date_time').order('date_time asc').limit(300)
-		
-
-
-
+		@test = SysmonTest.select('cpu_util, cpu_idle, date_time').order('date_time asc').limit(300)	
 	end
+
 
 	def data_values
 	    ss = []
@@ -97,8 +94,14 @@ class AnalyticsController < ApplicationController
 	    #result = client[collectionname].insert_one(filedata.tempfile)
 	    #render json: client.database.collection_names, status:200
 	    #render json: {"success": json_out}, status:200 # use this render for .csv or .txt
-	    a = Mongobicollection.create(collectionname:collectionname,type_collection:filedata.content_type,user_id:current_user.id,db_name:"development")
+	    Mongobicollection.create(collectionname:collectionname,type_collection:filedata.content_type,user_id:current_user.id,db_name:"development")
 	    #session[:current_user_id] = @user.id
+
+	    client[collectionname].find().each do |document|
+	    	client[collectionname].update_one({:_id => document["_id"]}, '$set' => {:biuser_id => current_user.id})
+	    	client[collectionname].update_one({:_id => document["_id"]}, '$set' => {:uploaded_at => Time.now.strftime("%e/%b/%Y %H:%M:%S %z")
+			}) # use d = DateTime.parse('3rd Feb 2001 04:05:06+03:30') to parse the date
+	    end
 	    render json: {"success": collectionname}, status:200
 	    
 
@@ -109,9 +112,14 @@ class AnalyticsController < ApplicationController
     hash_value.each do |key, value|
       #ss << value.class.name
       if value.is_a? Hash
-        ss << { name: key, children: recursive_keys_final(value) }
+      	#byebug
+      	if key != "biuser_id"
+        	ss << { name: key, children: recursive_keys_final(value) }
+    	end
       else
-        ss << { name: key }
+      	if key != "biuser_id"
+        	ss << { name: key }
+        end
       end
       
     end
@@ -149,7 +157,7 @@ class AnalyticsController < ApplicationController
 			    	#byebug
 			      if columns.empty?
 			      	#byebug
-			        # We dont want attributes with whitespaces
+			        # We dont want attributes with whitespaces (add "_" instead of space)
 			        #byebug
 			        columns = row.collect { |c| c.downcase.gsub(' ', '_') }
 
@@ -220,8 +228,9 @@ class AnalyticsController < ApplicationController
 		    collection_docs << docs   
 		    if counter == 0
 		    docs.each do |key, value|
-
-		    	key_array << { title: key, data: key }
+		    	if key != "biuser_id"
+		    		key_array << { title: key, data: key }
+		    	end
 		    end # docs.each end
 			end # end if
 			counter = counter + 1
@@ -255,7 +264,7 @@ class AnalyticsController < ApplicationController
 		    #byebug
 		    # routine to delete specific id from JSON Array
 		    docs = document.tap { |hs| hs.delete("_id") } 
-		    
+		    docs = document.tap { |hs| hs.delete("biuser_id") } #to delete userid
 		    #collection_docs << docs   
 
 		   	doc_arr << docs
@@ -312,23 +321,24 @@ class AnalyticsController < ApplicationController
 			
 			end
 
-			if operatorused == "+"
+			if operatorused == "add"
 				
 				third_value = first_value + second_value # addition
 
-			elsif operatorused == "-"
+			elsif operatorused == "subtract"
 
 				third_value = first_value - second_value # subtraction
 
-			elsif operatorused == "*"
+			elsif operatorused == "multiply"
 
 				third_value = first_value * second_value # multiplication
 
-			elsif operatorused == "/"
+			elsif operatorused == "divide"
 
 				third_value = first_value / second_value # division		
 					
 			end
+			#byebug
 		   	
 		   	client[viewcollection].update_one({:_id => document["_id"]}, '$set' => {columnname => third_value})
 
@@ -423,10 +433,40 @@ class AnalyticsController < ApplicationController
 				render json:ss, status:200
 			end
 
+	def user_collection
+		
+		collection_names = []
+		client_host = ['localhost:27017']
+		client_options = {
+  				database: 'development',
+  				user: 'mydbuser',
+  				password: 'dbuser'
+						}
+	    client = Mongo::Client.new(client_host, client_options)
+
+		client.collections.each do |collection|
+			#coll.find({}, :sort => ['value','descending'])
+			b = collection.find().first #to get first document using find
+			c = b.has_key?(:biuser_id)	
+			if c == true
+				if b["biuser_id"] == current_user.id
+					collection_names << collection.name 
+
+				else 
+					render json:{error:"List Empty, no collection(s) exists for user:" + " " + current_user.email}, status:400 #not a bad request just missing empty	
+					return
+				end
+			end
+		end
+
+		collection_names = collection_names.sort! # to sort the aray by name
+		render json:collection_names, status:200 #2 Render formats: 1) HTML (implicit) --> views should contain <actionname>.html.erb  & 2) JSON (explicit) see above
+	end
+
 
 
 			def is_number? string
-				 	true if Float(string) rescue false
+				true if Float(string) rescue false
 			end
 
 			  private
