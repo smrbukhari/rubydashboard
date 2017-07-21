@@ -18,8 +18,36 @@ class DemoController < ApplicationController
 	end
 
 	def line_chart_data
-		test = SysmonTest.select('cpu_util, cpu_idle, date_time', 'mem_usage').order('date_time asc').limit(20)
-		render json:{data:test}, status:200
+		#test = SysmonTest.select('cpu_util, cpu_idle, date_time', 'mem_usage').order('date_time asc').limit(20)
+		qq = params["lastcollection_name"]
+		ss = params["colname"]
+		rr = params["rowname"]
+		
+		
+		client_host = ['localhost:27017']
+		client_options = {
+  				database: 'development',
+  				user: 'mydbuser',
+  				password: 'dbuser'
+						}
+	    client = Mongo::Client.new(client_host, client_options)
+	    #byebug
+	    col_data = []
+	    row_data = []
+		counter = 0
+		#doc_arr = []
+		#byebug
+	    client[qq].find().each do |document| 
+	    	doc_arr = []
+		   	r = document[ss]
+			col_data << document
+			counter = counter + 1
+
+		    #byebug
+
+		end # document end
+	#	byebug
+		render json:{data:counter}, status:200
 	end
 
 	def map_data

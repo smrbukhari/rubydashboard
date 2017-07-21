@@ -12,7 +12,8 @@ Rails.application.routes.draw do
   resources :products #this is route named products, need to generate a controller for this also see rails generate controller
   get 'analytics' => 'analytics#index'
   get 'demo' => 'demo#index'
-  get 'plotly_line_api' => 'demo#line_chart_data'
+  get 'bidash' => 'bidash#index'
+  get 'plotly_line_api' => 'analytics#line_chart_data'
   get 'plotly_map_api' => 'demo#map_data'
   get 'headers' => 'analytics#data_values'
   get 'displaydata' => 'analytics#data_display'

@@ -10,6 +10,8 @@ var dataid;
 var dataid_name;
 var lastcollection_name;
 var columndata;
+var selected_col1;
+var selected_row1;
 
 
 $(window).load(function (){
@@ -20,8 +22,8 @@ $(window).load(function (){
 
   // ******************* (document).ready opening *******************
   $(document).ready(function (){
-    popup = 0;
-    var values = [];
+    popup = 0; //logic to disable popup in document.ready
+    /*var values = [];
     $('#dropdown option').each(function() { 
         values.push( $(this).attr('value') );
     });
@@ -43,7 +45,7 @@ $(window).load(function (){
       	$('#' + this.value).css('display', 'block'); //main code to switch between graphs
        	plotly_function();
       }		
-    });  //closing dropdown change 
+    });  //closing dropdown change*/ 
 
 	
 		$('#data').addClass("active"); // to make Data active on document ready
@@ -119,15 +121,25 @@ $(window).load(function (){
    	}); //file change closing 
 
     // Code for send to row and send to col data transfer to div
+    selected_col1 = '';
+    selected_row1 = '';
 		$('#s2col').on('click',function (event) {				
 			dataid_name = dataid.name;
 			$('.data_col').empty().append("<div><div class='btn-info' style='display: inline-block; border-radius: 5px; font-weight:bold; '> " + dataid.name + "<span id="+ dataid.name +" onclick='doFunction("+ dataid.name +");' style='display: inline-block; border-radius: 5px; font-weight:bold; margin-left: 5px; cursor: pointer; cursor: hand;'>&#10006;</span></div></div>");
+      selected_col1 = dataid.name; 
+      if(selected_col1 != '' && selected_row1 != ''){
+       enableMarks(selected_col1,selected_row1);
+      }
     }); // closing for s2col
 
 		$('#s2row').on('click',function (event) {
 			dataid_name = dataid.name;				
 		  $('.data_row').empty().append("<div><div class='btn-info' style='display: inline-block; border-radius: 5px; font-weight:bold; '> " + dataid.name + "<span id="+ dataid.name +" onclick='doFunction("+ dataid.name +");' style='display: inline-block; border-radius: 5px; font-weight:bold; margin-left: 5px; cursor: pointer; cursor: hand;'>&#10006;</span></div></div>");
-		}); // closing for s2row
+		  selected_row1 = dataid.name;
+      if(selected_col1 != '' && selected_row1 != ''){
+       enableMarks(selected_col1,selected_row1);
+      } 
+    }); // closing for s2row
 		  			
 
     $('#viewdata').on('click',function(){
@@ -241,6 +253,7 @@ $(window).load(function (){
       }); //closing ajax
     });// closing addColButton button click 
 
+    //routine to give dropdown for previous existing databases  
     $('#importbutton').on('click',function(){
       $.ajax({
         url: "/usercollection",
@@ -257,12 +270,14 @@ $(window).load(function (){
          text1 += '</select>';    
          $('#showcollection').html(text1);
          $('#mycollection').val("");
+
         }, //success closing
 
         error: function (response){
         } //error closing
       }); //closing ajax
-    }); 
+    });
+    disableMarks(); //to disable dropdown select Marks 
   }); // *******************document ready closing*******************
 	
 
@@ -271,6 +286,40 @@ $(window).load(function (){
   			//alert(ele);
   			ele.closest("div").remove();
   	};
+
+    function disableMarks(){
+
+      $("#dropdown").attr('disabled',true);
+
+    };
+
+    function enableMarks(colname,rowname){
+      $("#dropdown").attr('disabled',false);
+      //popup = 0;
+      var values = [];
+      $('#dropdown option').each(function() { 
+          values.push( $(this).attr('value') );
+      });
+
+
+      $('#dropdown').on('change',function(){
+        var i;
+        for (i = 0; i < values.length; ++i){
+            $('#' + values[i]).css('display','none');
+        }
+
+        if(this.value == 'mapid'){
+          $('.col-sm-6').append("<div id='mapid'></div>");
+          geo_function();
+          }
+        else{
+          $('#mapid').remove();
+          rem_map();
+          $('#' + this.value).css('display', 'block'); //main code to switch between graphs
+          plotly_function(colname,rowname,lastcollection_name);
+        }   
+      });  //closing dropdown change
+    };
 
 	
 
@@ -286,7 +335,7 @@ $(window).load(function (){
           $('#tree1').empty(); //to clear the div
           var data = response[0];
           $('#tree1').tree();  //resolves refresh issue for the tree
-          $('#tree1').tree('loadData',data );   //loadData loads data in the empty tree
+          $('#tree1').tree('loadData',data);   //loadData loads data in the empty tree
                // data: response[0] //previous method before loadData
           $('#tree1').bind('tree.click',function(event){
             if (event.node.children.length == 0){
@@ -303,6 +352,7 @@ $(window).load(function (){
           }); //bind closing
           // add description for window click
           $(window).click(function(event) { //keypress event, fadeout on 'escape'  
+            //alert(popup);
             if(popup == 1){
              $('.list-popup').fadeOut(400, function(){
                 popup = 0;

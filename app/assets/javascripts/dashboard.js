@@ -1,39 +1,47 @@
 
-   function plotly_function() {
 
-   	var cpu_util = [];
-	var cpu_idle = [];
-	var date_time = [];
-	var mem_usage = [];
+   function plotly_function(colname,rowname,lastcollection) {
+
+   	var col_array = [];
+	var row_array = [];
+	//var date_time = [];
+	//var mem_usage = [];
+	
+
 
 //$("#button1").click(function(){
 //alert ("Button pressed succ.");
 
 $.ajax({
-    url: "/plotly_line_api",
+    url: "/plotly_line_api?lastcollection_name=" + lastcollection + "&colname="+ colname + "&rowname=" + rowname,
     type: "get",
     datatype: "json",
  //   data: JSON.stringify(data),
  //   headers: {"content-type": "application/json"},
     success: function (response) {
     	//alert ("success")
-    	for (i = 0; i < response.data.length; i++) 
-    	{ 
-    	 	cpu_idle.push(response.data[i].cpu_idle);
+
+    	/*for (i = 0; i < response.data.length; i++) 
+    	{ */
+    	 /*	cpu_idle.push(response.data[i].cpu_idle);
     		cpu_util.push(response.data[i].cpu_util);
     		date_time.push(response.data[i].date_time);
-    		mem_usage.push(response.data[i].mem_usage);
+    		mem_usage.push(response.data[i].mem_usage);*/
     	//	alert(response.data[i].mem_usage);
-    	}
+
+    	//}
+    	//alert("colname:" + colname + "  " + "rowname:" + rowname+ "  " + lastcollection)
      //   alert ("success");
 
-
+     	xaaxis = response.data[1].sort()
 
        //Define Plotly varaibles
     	var plLine1 = {
- 		x: date_time, 
-  		y: cpu_util, 
-  		name: 'CPU Util',
+ 		x: xaaxis, 
+  		//y: cpu_util, 
+  		//x: xaxis,
+  		y: response.data[0],
+  		//name: 'CPU Util',
   		type: 'scatter',
   		mode: 'lines',
   		line: {shape: 'linear', width: 2}
@@ -41,32 +49,33 @@ $.ajax({
 		};
 
     	var plLine2 = {
- 		x: date_time, 
-  		y: cpu_idle, 
-  		name: 'CPU Idle',
+ 		x: xaaxis, 
+  		y: response.data[0], 
+  		//name: 'CPU Idle',
   		type: 'scatter',
   		mode: 'lines',
   		line: { dash: 'dot',width: 2}
 		};
 
 		var plArea1 = {
- 		x: date_time, 
-  		y: cpu_util, 
-  		name: 'CPU Util',
+ 		x: response.data[1], 
+  		y: response.data[0], 
+  		//name: 'CPU Util',
   		type: 'scatter',
   		fill: 'tozeroy',
 
 		};
 
+		/*
     	var plArea2 = {
- 		x: date_time, 
-  		y: cpu_idle, 
-  		name: 'CPU Idle',
+ 		x: response.data[1], 
+  		y: response.data[0],  
+  		//name: 'CPU Idle',
   		type: 'scatter',
   		fill: 'tonexty'
 		};
 
-
+		
 		var plScat1 = {
  		x: cpu_util, 
   		y: cpu_idle, 
@@ -81,26 +90,26 @@ $.ajax({
   		name: 'CPU Idle',
   		type: 'scatter',
   		fill: 'tonexty',
-		};
+		};*/
 
 
 
  		var plBar1 = {
- 		x: date_time, 
-  		y: cpu_util,
-  		name: 'CPU Util', 
+ 		x: response.data[1], 
+  		y: response.data[0],
+  		//name: 'CPU Util', 
   		type: 'bar'
 		};
 
     	var plBar2 = {
- 		x: date_time, 
-  		y: cpu_idle, 
-  		name: 'CPU Idle',
+ 		x: response.data[1], 
+  		y: response.data[0], 
+  		//name: 'CPU Idle',
   		type: 'bar'
 		};
 
 
- 		var plHBar1 = {
+ 	/*	var plHBar1 = {
  		x: cpu_util, 
  		y: date_time, 
   		type: 'bar',
@@ -121,38 +130,40 @@ $.ajax({
   		labels: ['Xorg', 'top', 'init','ruby','firefox','Xorg1', 'top1', 'init1','ruby1','firefox1'],
   		type: 'pie'
 		}];
-
+*/
 		var lineData = [plLine1,plLine2];
 		var barData = [plBar1,plBar2];
-		var hBarData = [plHBar1,plHBar2];
-		var areaData = [plArea1,plArea2];
-		var scatData = [plScat1];
+		//var hBarData = [plHBar1,plHBar2];
+		//var areaData = [plArea1,plArea2];
+		var areaData = [plArea1];
+		//var scatData = [plScat1];
 
 	   //Define Plotly layout	
 		var layout = {
-		  title: 'Cpu Stats',
+		  title: lastcollection,
 
 		  xaxis: {
-		    title: 'Time'
+		    title: rowname
 		  },
 		  yaxis: {
-		    title: 'CPU Util'
+		    title: colname
 		  }
+
 		};
 
 		var layoutBar = {
-		  title: 'Cpu Stats',
+		  title: lastcollection,
 		  barmode: 'stack',
 
 		  xaxis: {
-		    title: 'Time'
+		    title: rowname
 		  },
 		  yaxis: {
-		    title: 'CPU Util'
+		    title: colname
 		  }
 		};
 
-		var layoutHBar = {
+		/*var layoutHBar = {
 		  title: 'Cpu Stats',
 		  barmode: 'stack',
 
@@ -184,7 +195,7 @@ $.ajax({
 		  yaxis: {
 		    title: 'CPU Idle'
 		  }
-		};	
+		};	*/
 		
 		//Plot Plotly graphs
 		Plotly.newPlot('plLineDiv', lineData, layout);
@@ -192,7 +203,7 @@ $.ajax({
 		//Plotly.newPlot('plBarDivH', hBarData, layoutHBar);
 		//Plotly.newPlot('plPieDiv', plPie, layoutPie);
 		Plotly.newPlot('plAreaDiv', areaData, layout);
-		Plotly.newPlot('plScatterDiv', scatData, layoutScatter);
+		//Plotly.newPlot('plScatterDiv', scatData, layoutScatter);
 		//alert ("success");
 	    },  //closing of first ajax body
      
@@ -205,4 +216,3 @@ $.ajax({
    }; //function close
 
 	
-
