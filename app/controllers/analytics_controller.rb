@@ -6,6 +6,7 @@
 
 require 'csv'
 require 'json'
+require 'date'
 
 	class AnalyticsController < ApplicationController
 	before_action :authenticate_user!
@@ -400,6 +401,9 @@ require 'json'
 		rr = params["rowname"]
 		col_val = []
 		row_val = []
+		sorted_date = []
+		sorted_date_to_s = []
+		unsorted_date = []
 		
 		client_host = ['localhost:27017']
 		client_options = {
@@ -412,6 +416,7 @@ require 'json'
 	    col_data = []
 	    row_data = []
 		counter = 0
+
 		#doc_arr = []
 		#byebug
 	    client[qq].find().each do |document| 
@@ -425,11 +430,29 @@ require 'json'
 					row_val << value
 					end    	
 			end
-
 		    #byebug
-
 		end # document end
-	#	byebug
+
+
+		row_val.each do |date_val|
+			begin
+				parsed_date = Date.strptime(date_val, "%d-%b-%y")
+				#byebug
+				#row_val.clear #empty array
+				unsorted_date << parsed_date
+			rescue
+			end
+		end
+		#byebug
+		if not unsorted_date.empty?
+			sorted_date = sorted_date + unsorted_date.sort
+			sorted_date.each do |sort_date|
+					sorted_date_to_s << sort_date
+			end
+			row_val.clear #empty array
+			row_val = row_val + sorted_date_to_s
+		end
+		#byebug
 		render json:{data:[col_val,row_val]}, status:200
 	end
 
@@ -438,6 +461,10 @@ require 'json'
 	def is_number? string
 		true if Float(string) rescue false
 	end
+
+	def is_date? string
+		#write strptime method to convert date format(s)
+	end	
 
   private
  

@@ -17,6 +17,85 @@ class DemoController < ApplicationController
 
 	end
 
+	def bi_dashboard
+
+
+	end
+
+	def bi_dashboard_hw_audit
+
+		static_collection = "Sample_HW_Audit"
+		col_val = []
+		row_val = []
+		row_data = []
+		col_val1 = []
+		row_val1 = []
+		row_data1 = []
+		filter_name = "dummy" 
+		filter_two = "dummy1"
+		ss = "region"  #Column Name
+		rr = "productname" #Row Name
+		#qq = "Pacific"  #2nd Row Name
+		pp = "RRUS11B13"
+		counter = 0
+		client_host = ['localhost:27017']
+		client_options = {
+  				database: 'development',
+  				user: 'mydbuser',
+  				password: 'dbuser'
+						}
+	    client = Mongo::Client.new(client_host, client_options)
+
+	    client[static_collection].find().each do |document| 
+	    	#byebug
+	    	if document[rr] == pp
+	    		#byebug
+	    		document.each do |key,value|
+
+	    			#byebug
+						
+					
+					if key == ss #and value == qq
+						r = filter_name
+						if not col_val.include? value
+
+							col_val << value
+							if counter != 0
+							   row_val << counter	
+						    end
+							counter = 0
+						end
+
+
+						
+						
+					end	  
+					
+					#if key == rr
+					#row_val << value
+					#end    
+					#if key == qq
+					#row_val1 << value
+					#end  	
+				end
+
+			counter = counter + 1
+			
+			end
+
+			
+			
+	    end
+
+	    #col_val1 = col_val
+	    #row_val1 = row_val
+
+	    #render json:{data:"success"}, status:200
+	    render json:{data:[col_val, row_val,col_val,row_val1]}, status:200
+
+	end
+
+
 	def line_chart_data
 		#test = SysmonTest.select('cpu_util, cpu_idle, date_time', 'mem_usage').order('date_time asc').limit(20)
 		qq = params["lastcollection_name"]

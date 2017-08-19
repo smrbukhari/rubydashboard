@@ -33,11 +33,10 @@ $.ajax({
     	//alert("colname:" + colname + "  " + "rowname:" + rowname+ "  " + lastcollection)
      //   alert ("success");
 
-     	xaaxis = response.data[1].sort()
 
        //Define Plotly varaibles
     	var plLine1 = {
- 		x: xaaxis, 
+ 		x: response.data[1], 
   		//y: cpu_util, 
   		//x: xaxis,
   		y: response.data[0],
@@ -49,7 +48,7 @@ $.ajax({
 		};
 
     	var plLine2 = {
- 		x: xaaxis, 
+ 		x: response.data[1], 
   		y: response.data[0], 
   		//name: 'CPU Idle',
   		type: 'scatter',

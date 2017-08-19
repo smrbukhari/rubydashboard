@@ -23,12 +23,13 @@ $(window).load(function (){
   // ******************* (document).ready opening *******************
   $(document).ready(function (){
     popup = 0; //logic to disable popup in document.ready
+    static_plots();
     /*var values = [];
     $('#dropdown option').each(function() { 
         values.push( $(this).attr('value') );
     });
 
-
+    
     $('#dropdown').on('change',function(){
       var i;
       for (i = 0; i < values.length; ++i){
