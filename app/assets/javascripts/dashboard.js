@@ -6,7 +6,7 @@
 	var row_array = [];
 	//var date_time = [];
 	//var mem_usage = [];
-	
+
 
 
 //$("#button1").click(function(){
@@ -21,7 +21,7 @@ $.ajax({
     success: function (response) {
     	//alert ("success")
 
-    	/*for (i = 0; i < response.data.length; i++) 
+    	/*for (i = 0; i < response.data.length; i++)
     	{ */
     	 /*	cpu_idle.push(response.data[i].cpu_idle);
     		cpu_util.push(response.data[i].cpu_util);
@@ -32,33 +32,39 @@ $.ajax({
     	//}
     	//alert("colname:" + colname + "  " + "rowname:" + rowname+ "  " + lastcollection)
      //   alert ("success");
-
-
+     var x_axises = [];
+     var y_axises = [];
+     response.data.forEach(function(item) {
+       x_axises.push(item[0]);
+       item[1].forEach(function(second_item) {
+         y_axises.push(second_item);
+       })
+     })
        //Define Plotly varaibles
     	var plLine1 = {
- 		x: response.data[1], 
-  		//y: cpu_util, 
+ 		x: x_axises,
+  		//y: cpu_util,
   		//x: xaxis,
-  		y: response.data[0],
+  		y: y_axises,
   		//name: 'CPU Util',
   		type: 'scatter',
   		mode: 'lines',
   		line: {shape: 'linear', width: 2}
-  		
+
 		};
 
-    	var plLine2 = {
- 		x: response.data[1], 
-  		y: response.data[0], 
-  		//name: 'CPU Idle',
-  		type: 'scatter',
-  		mode: 'lines',
-  		line: { dash: 'dot',width: 2}
-		};
+    // 	var plLine2 = {
+ 	// 	x: response.data[1],
+  	// 	y: response.data[0],
+  	// 	//name: 'CPU Idle',
+  	// 	type: 'scatter',
+  	// 	mode: 'lines',
+  	// 	line: { dash: 'dot',width: 2}
+		// };
 
 		var plArea1 = {
- 		x: response.data[1], 
-  		y: response.data[0], 
+ 		x: response.data[1],
+  		y: response.data[0],
   		//name: 'CPU Util',
   		type: 'scatter',
   		fill: 'tozeroy',
@@ -67,25 +73,25 @@ $.ajax({
 
 		/*
     	var plArea2 = {
- 		x: response.data[1], 
-  		y: response.data[0],  
+ 		x: response.data[1],
+  		y: response.data[0],
   		//name: 'CPU Idle',
   		type: 'scatter',
   		fill: 'tonexty'
 		};
 
-		
+
 		var plScat1 = {
- 		x: cpu_util, 
-  		y: cpu_idle, 
+ 		x: cpu_util,
+  		y: cpu_idle,
   		name: 'CPU Util',
   		type: 'scatter',
 
 		};
 
     	var plScat2 = {
- 		x: date_time, 
-  		y: cpu_idle, 
+ 		x: date_time,
+  		y: cpu_idle,
   		name: 'CPU Idle',
   		type: 'scatter',
   		fill: 'tonexty',
@@ -94,31 +100,31 @@ $.ajax({
 
 
  		var plBar1 = {
- 		x: response.data[1], 
+ 		x: response.data[1],
   		y: response.data[0],
-  		//name: 'CPU Util', 
+  		//name: 'CPU Util',
   		type: 'bar'
 		};
 
     	var plBar2 = {
- 		x: response.data[1], 
-  		y: response.data[0], 
+ 		x: response.data[1],
+  		y: response.data[0],
   		//name: 'CPU Idle',
   		type: 'bar'
 		};
 
 
  	/*	var plHBar1 = {
- 		x: cpu_util, 
- 		y: date_time, 
+ 		x: cpu_util,
+ 		y: date_time,
   		type: 'bar',
   		name: 'CPU Util',
   		orientation: 'h'
 		};
 
     	var plHBar2 = {
- 		x: cpu_idle, 
- 		y: date_time, 
+ 		x: cpu_idle,
+ 		y: date_time,
   		type: 'bar',
   		name: 'CPU Idle',
   		orientation: 'h'
@@ -130,14 +136,15 @@ $.ajax({
   		type: 'pie'
 		}];
 */
-		var lineData = [plLine1,plLine2];
+		// var lineData = [plLine1,plLine2];
+    var lineData = [plLine1];
 		var barData = [plBar1,plBar2];
 		//var hBarData = [plHBar1,plHBar2];
 		//var areaData = [plArea1,plArea2];
 		var areaData = [plArea1];
 		//var scatData = [plScat1];
 
-	   //Define Plotly layout	
+	   //Define Plotly layout
 		var layout = {
 		  title: lastcollection,
 
@@ -174,19 +181,19 @@ $.ajax({
 		  }
 		};
 
-   
+
 
 	var layoutPie = {
 		  title: 'Memory Usage by App',
 		  showlegend:true,
 		  legend: {"orientation": "h"}
-		 
+
 
 		};
 
 	var layoutScatter = {
 		  title: 'Cpu Stats',
-		  
+
 
 		  xaxis: {
 		    title: 'CPU Util'
@@ -195,7 +202,7 @@ $.ajax({
 		    title: 'CPU Idle'
 		  }
 		};	*/
-		
+
 		//Plot Plotly graphs
 		Plotly.newPlot('plLineDiv', lineData, layout);
 		Plotly.newPlot('plBarDiv', barData, layoutBar);
@@ -205,7 +212,7 @@ $.ajax({
 		//Plotly.newPlot('plScatterDiv', scatData, layoutScatter);
 		//alert ("success");
 	    },  //closing of first ajax body
-     
+
      error: function (response){
 
     }
@@ -213,5 +220,3 @@ $.ajax({
 
 
    }; //function close
-
-	

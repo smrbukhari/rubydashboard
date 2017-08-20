@@ -10,23 +10,23 @@ require 'date'
 
 	class AnalyticsController < ApplicationController
 	before_action :authenticate_user!
-	def index 
+	def index
 		@first_value = Tweet.first #use @ when variable used in page or by child objects
-		@headers = @first_value.attributes.keys
+		@headers = @first_value.attributes.keys if @first_value
 		@test_array = []
-		@test = SysmonTest.select('cpu_util, cpu_idle, date_time').order('date_time asc').limit(300)	
+		@test = SysmonTest.select('cpu_util, cpu_idle, date_time').order('date_time asc').limit(300)
 	end
 
 
 	def data_values
 	    ss = []
-	    pp = [] 
+	    pp = []
 	    qq = params["collectionname"]
 	    zz = []
 		#first_value = Tweet.first
 		#rr = first_value.as_json(:except => :_id).merge('_id' => first_value.id).to_json
 		#rr = JSON.parse(rr)
-		
+
 		client_host = ['localhost:27017']
 		client_options = {
   				database: 'development',
@@ -36,13 +36,13 @@ require 'date'
 	    client = Mongo::Client.new(client_host, client_options)
 	    #byebug
 	    collection_docs = []
-	    client[qq].find().each do |document| 
+	    client[qq].find().each do |document|
 	    	collection_docs << document
 	    end
 	    collection_doc = collection_docs.first
 	    #byebug
 	    #rr = collection_doc.as_json(:except => :_id).merge('_id' => collection_doc.id).to_json
-	    rr = collection_doc.to_json 
+	    rr = collection_doc.to_json
 	    rr = JSON.parse(rr)
 
 	    ss << recursive_keys_final(rr)
@@ -58,7 +58,7 @@ require 'date'
 
 	    #byebug
 		#ssa = first_value.class.name
-		#headers = first_value.attributes.keys 
+		#headers = first_value.attributes.keys
 
 		render json:ss, status:200
 
@@ -80,24 +80,24 @@ require 'date'
 	    	client[collectionname].create
 			rescue
 			render json: {"error": "collection_exists"}, status:400
-			return	
+			return
 		end
 
-		
+
 	    #byebug
-		
+
 	    if filedata.content_type == "text/csv"
 	    	csv_parser(filedata.tempfile,client,collectionname)
 		    elsif  filedata.content_type == "application/json"
 		    	json_parser(filedata.tempfile,client,collectionname)
-		    elsif  filedata.content_type == "text/plain"	
+		    elsif  filedata.content_type == "text/plain"
 	    	text_parser(filedata.tempfile,client,collectionname)
 	    end
 
 	    Mongobicollection.create(collectionname:collectionname,type_collection:filedata.content_type,user_id:current_user.id,db_name:"development")
 	    client[collectionname].find().each do |document|
 	    	client[collectionname].update_one({:_id => document["_id"]}, '$set' => {:biuser_id => current_user.id})
-	    	client[collectionname].update_one({:_id => document["_id"]}, '$set' => {:uploaded_at => Time.now.strftime("%e/%b/%Y %H:%M:%S %z")}) # use DateTime.parse(strftime) to parse the date 	 
+	    	client[collectionname].update_one({:_id => document["_id"]}, '$set' => {:uploaded_at => Time.now.strftime("%e/%b/%Y %H:%M:%S %z")}) # use DateTime.parse(strftime) to parse the date
 	    end
 	    render json: {"success": collectionname}, status:200
 	end
@@ -115,7 +115,7 @@ require 'date'
 		      	if key != "biuser_id" and key != "_id"
 		        	ss << { name: key }
 		    	end
-	    	end  
+	    	end
     	end
     	return ss
   	end
@@ -128,9 +128,9 @@ require 'date'
   					item = JSON.parse(item)
 				rescue
 				end
-  				client[collectionname].insert_one(item)				
+  				client[collectionname].insert_one(item)
   			end
-		end			
+		end
   	end
 
 	def csv_parser(file_path,client,collectionname) # to parse csv
@@ -145,7 +145,7 @@ require 'date'
 		        columns = row.collect { |c| c.downcase.gsub(' ', '_') }
 		        next
 		    end
-			 
+
 			       #indexing(row, columns)
 			instances << client[collectionname].insert_one(indexing(row, columns))
 			#byebug
@@ -160,8 +160,8 @@ require 'date'
 		rows = []
 		i = 0
 		CSV.foreach(file_path) do |row|
-			columns = [] 
-			if i == 0 
+			columns = []
+			if i == 0
 				column_first = row.collect { |c| c.downcase.gsub(' ', '_') }
 			        	rows = column_first[0].split
 			end
@@ -178,7 +178,7 @@ require 'date'
 		instances
 	end
 
-			 
+
 	def data_display
 
 		temp_array = []
@@ -197,10 +197,10 @@ require 'date'
 		collection_docs = []
 		counter = 0
 		begin
-		    client[viewcollection].find().each do |document| 	
+		    client[viewcollection].find().each do |document|
 			    # routine to delete specific id from JSON Array
-			    docs = document.tap { |hs| hs.delete("_id") }    
-			    collection_docs << docs   
+			    docs = document.tap { |hs| hs.delete("_id") }
+			    collection_docs << docs
 			    if counter == 0
 			    	docs.each do |key, value|
 			    		if key != "biuser_id"
@@ -215,7 +215,7 @@ require 'date'
    		render json: {columns:key_array,data:collection_docs,buttons:["excelHtml5","csvHtml5","pdfHtml5"],dom: "Bfrtip",processing: "true"}, status:200
 	end
 
-	
+
 	def json_display
 
 		temp_array = []
@@ -234,12 +234,12 @@ require 'date'
 		collection_docs = []
 		counter = 0
 		#doc_arr = []
-	    client[viewcollection].find().each do |document| 
+	    client[viewcollection].find().each do |document|
 	    	doc_arr = []
 		    # routine to delete specific id from JSON Array
-		    docs = document.tap { |hs| hs.delete("_id") } 
+		    docs = document.tap { |hs| hs.delete("_id") }
 		    docs = document.tap { |hs| hs.delete("biuser_id") } #to delete userid
-		   	doc_arr << docs 
+		   	doc_arr << docs
 		    collection_docs << doc_arr
 
 		    #byebug
@@ -261,7 +261,7 @@ require 'date'
   				password: 'dbuser'
 						}
 	    client = Mongo::Client.new(client_host, client_options)
-	    
+
 	    viewcollection = params["collectionname"]
 	    viewdata = params["file"]
 	    columnname = params["nameofcolumn"]
@@ -273,7 +273,7 @@ require 'date'
         second_value = 0
         third_value = 0
 
-	    client[viewcollection].find().each do |document| 
+	    client[viewcollection].find().each do |document|
 		    document.each do |key, value|
 
 			    if key == firstcolumn
@@ -295,9 +295,9 @@ require 'date'
 					third_value = first_value * second_value # multiplication
 
 				elsif operatorused == "divide"
-					third_value = first_value / second_value # division					
+					third_value = first_value / second_value # division
 			end
-			#byebug	   	
+			#byebug
 		   	client[viewcollection].update_one({:_id => document["_id"]}, '$set' => {columnname => third_value})
 		end
 		render json: {success: "column added successfully" }, status:200
@@ -315,15 +315,15 @@ require 'date'
   				password: 'dbuser'
 						}
 	    client = Mongo::Client.new(client_host, client_options)
-	    
+
 	    viewcollection = params["collectionname"]
 	    viewdata = params["file"]
 	    columnname = params["nameofcolumn"]
 
         empty_value = ""
 
-	    client[viewcollection].find().each do |document| 
-		   	
+	    client[viewcollection].find().each do |document|
+
 		   	client[viewcollection].update_one({:_id => document["_id"]}, '$set' => {columnname => empty_value})
 
 		end
@@ -338,7 +338,7 @@ require 'date'
 		#first_value = Tweet.first
 		#rr = first_value.as_json(:except => :_id).merge('_id' => first_value.id).to_json
 		#rr = JSON.parse(rr)
-		
+
 		client_host = ['localhost:27017']
 		client_options = {
   				database: 'development',
@@ -348,25 +348,25 @@ require 'date'
 	    client = Mongo::Client.new(client_host, client_options)
 	    #byebug
 	    collection_docs = []
-	    client[qq].find().each do |document| 
+	    client[qq].find().each do |document|
 	    	collection_docs << document
 		end
 	    collection_doc = collection_docs.first
 	    #byebug
 	    #rr = collection_doc.as_json(:except => :_id).merge('_id' => collection_doc.id).to_json
-	    rr = collection_doc.to_json 
+	    rr = collection_doc.to_json
 	    rr = JSON.parse(rr)
 		ss = []
 		rr.each do |key, value|
-			if is_number?(value) 
-			        ss << key 
-			end # end for if		      
+			if is_number?(value)
+			        ss << key
+			end # end for if
 		end
 		render json:ss, status:200
 	end
 
 	def user_collection
-		
+
 		collection_names = []
 		client_host = ['localhost:27017']
 		client_options = {
@@ -379,13 +379,13 @@ require 'date'
 		client.collections.each do |collection|
 			#coll.find({}, :sort => ['value','descending'])
 			b = collection.find().first #to get first document using find
-			c = b.has_key?(:biuser_id)	
+			c = b.has_key?(:biuser_id)
 			if c == true
 				if b["biuser_id"] == current_user.id
-					collection_names << collection.name 
+					collection_names << collection.name
 
-				else 
-					render json:{error:"List Empty, no collection(s) exists for user:" + " " + current_user.email}, status:400 #not a bad request just missing empty	
+				else
+					render json:{error:"List Empty, no collection(s) exists for user:" + " " + current_user.email}, status:400 #not a bad request just missing empty
 					return
 				end
 			end
@@ -404,7 +404,7 @@ require 'date'
 		sorted_date = []
 		sorted_date_to_s = []
 		unsorted_date = []
-		
+
 		client_host = ['localhost:27017']
 		client_options = {
   				database: 'development',
@@ -415,45 +415,50 @@ require 'date'
 	    #byebug
 	    col_data = []
 	    row_data = []
+			result_hash = {}
 		counter = 0
 
 		#doc_arr = []
 		#byebug
-	    client[qq].find().each do |document| 
+	    client[qq].find().each do |document|
 			#counter = counter + 1
-			document.each do |key,value|
-					row_data << key	
-					if key == ss
-					col_val << value	
-					end	  
-					if key == rr
-					row_val << value
-					end    	
-			end
+			# document.each do |key|
+					parsed_date = Date.strptime(document[rr], "%d-%b-%y")
+					result_hash[parsed_date] ? result_hash[parsed_date] << document[ss] : result_hash[parsed_date] = [document[ss]]
+
+					# row_data << key
+					# if key == ss
+					# 	col_val << value
+					# end
+					# if key == rr
+					# 	row_val << value
+					# end
+			# end
 		    #byebug
 		end # document end
+		# byebug
 
 
-		row_val.each do |date_val|
-			begin
-				parsed_date = Date.strptime(date_val, "%d-%b-%y")
-				#byebug
-				#row_val.clear #empty array
-				unsorted_date << parsed_date
-			rescue
-			end
-		end
-		#byebug
-		if not unsorted_date.empty?
-			sorted_date = sorted_date + unsorted_date.sort
-			sorted_date.each do |sort_date|
-					sorted_date_to_s << sort_date
-			end
-			row_val.clear #empty array
-			row_val = row_val + sorted_date_to_s
-		end
-		#byebug
-		render json:{data:[col_val,row_val]}, status:200
+		# row_val.each do |date_val|
+		# 	begin
+		# 		parsed_date = Date.strptime(date_val, "%d-%b-%y")
+		# 		#byebug
+		# 		#row_val.clear #empty array
+		# 		unsorted_date << parsed_date
+		# 	rescue
+		# 	end
+		# end
+		# #byebug
+		# if not unsorted_date.empty?
+		# 	sorted_date = sorted_date + unsorted_date.sort
+		# 	sorted_date.each do |sort_date|
+		# 			sorted_date_to_s << sort_date
+		# 	end
+		# 	row_val.clear #empty array
+		# 	row_val = row_val + sorted_date_to_s
+		# end
+
+		render json:{data: result_hash.sort}, status:200
 	end
 
 
@@ -464,10 +469,10 @@ require 'date'
 
 	def is_date? string
 		#write strptime method to convert date format(s)
-	end	
+	end
 
   private
- 
+
   def indexing(row, columns)
     attrs = {}
     columns.each_with_index do |column, index|
