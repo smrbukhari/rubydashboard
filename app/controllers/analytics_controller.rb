@@ -378,18 +378,19 @@ require 'date'
 
 		client.collections.each do |collection|
 			#coll.find({}, :sort => ['value','descending'])
-			b = collection.find().first #to get first document using find
-			c = b.has_key?(:biuser_id)
-			if c == true
-				if b["biuser_id"] == current_user.id
-					collection_names << collection.name
+			first_doc = collection.find().first #to get first document using find
+			has_biuser_id = first_doc.has_key?(:biuser_id)
 
-				else
-					render json:{error:"List Empty, no collection(s) exists for user:" + " " + current_user.email}, status:400 #not a bad request just missing empty
-					return
+			if has_biuser_id == true
+				if first_doc["biuser_id"] == current_user.id
+					#byebug
+					collection_names << collection.name
 				end
 			end
 		end
+
+		return render json:{error:"List Empty, no collection(s) exists for user:" + " " + current_user.email}, status:400 unless collection_names.present? #not a bad request just missing empty
+
 		collection_names = collection_names.sort! # to sort the aray by name
 		render json:collection_names, status:200 #2 Render formats: 1) HTML (implicit) --> views should contain <actionname>.html.erb  & 2) JSON (explicit) see above
 	end

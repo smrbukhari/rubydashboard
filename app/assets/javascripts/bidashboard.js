@@ -26,7 +26,7 @@
     //x: response.data[1], 
       x: response.data[0], //col_val,
       y: response.data[1], //row_val,
-      name: 'BB5216',
+      name: 'RRUS11B13',
       //y: response.data[0],
       //name: 'CPU Util', 
       type: 'bar',

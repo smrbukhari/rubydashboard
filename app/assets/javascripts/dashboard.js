@@ -32,20 +32,18 @@ $.ajax({
     	//}
     	//alert("colname:" + colname + "  " + "rowname:" + rowname+ "  " + lastcollection)
      //   alert ("success");
-     var x_axises = [];
-     var y_axises = [];
+     var x_axis = [];
+     var y_axis = [];
      response.data.forEach(function(item) {
-       x_axises.push(item[0]);
+       x_axis.push(item[0]);
        item[1].forEach(function(second_item) {
-         y_axises.push(second_item);
+         y_axis.push(second_item);
        })
      })
        //Define Plotly varaibles
     	var plLine1 = {
- 		x: x_axises,
-  		//y: cpu_util,
-  		//x: xaxis,
-  		y: y_axises,
+ 		x: x_axis,
+  		y: y_axis,
   		//name: 'CPU Util',
   		type: 'scatter',
   		mode: 'lines',
@@ -63,8 +61,8 @@ $.ajax({
 		// };
 
 		var plArea1 = {
- 		x: response.data[1],
-  		y: response.data[0],
+ 		x: x_axis,
+  		y: y_axis,
   		//name: 'CPU Util',
   		type: 'scatter',
   		fill: 'tozeroy',
@@ -100,18 +98,18 @@ $.ajax({
 
 
  		var plBar1 = {
- 		x: response.data[1],
-  		y: response.data[0],
+ 		x: x_axis,
+  		y: y_axis,
   		//name: 'CPU Util',
   		type: 'bar'
 		};
 
-    	var plBar2 = {
- 		x: response.data[1],
-  		y: response.data[0],
+    	/*var plBar2 = {
+ 		x: x_axis,
+  		y: y_axis,
   		//name: 'CPU Idle',
   		type: 'bar'
-		};
+		};*/
 
 
  	/*	var plHBar1 = {
@@ -137,8 +135,9 @@ $.ajax({
 		}];
 */
 		// var lineData = [plLine1,plLine2];
-    var lineData = [plLine1];
-		var barData = [plBar1,plBar2];
+    	var lineData = [plLine1];
+		//var barData = [plBar1,plBar2];
+		var barData = [plBar1];
 		//var hBarData = [plHBar1,plHBar2];
 		//var areaData = [plArea1,plArea2];
 		var areaData = [plArea1];
