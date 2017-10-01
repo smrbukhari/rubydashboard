@@ -24,75 +24,51 @@ class DemoController < ApplicationController
 
 	def bi_dashboard_hw_audit
 
-		static_collection = "Sample_HW_Audit"
-		col_val = []
-		row_val = []
-		row_data = []
-		col_val1 = []
-		row_val1 = []
-		row_data1 = []
-		filter_name = "dummy" 
-		filter_two = "dummy1"
-		ss = "region"  #Column Name
-		rr = "productname" #Row Name
-		#qq = "Pacific"  #2nd Row Name
-		pp = "RRUS11B13"
-		counter = 0
-		client_host = ['localhost:27017']
-		client_options = {
-  				database: 'development',
-  				user: 'mydbuser',
-  				password: 'dbuser'
-						}
-	    client = Mongo::Client.new(client_host, client_options)
-
-	    client[static_collection].find().each do |document| 
-	    	#byebug
-	    	if document[rr] == pp
-	    		#byebug
-	    		document.each do |key,value|
-
-	    			#byebug
-						
-					
-					if key == ss #and value == qq
-						r = filter_name
-						if not col_val.include? value
-
-							col_val << value
-							if counter != 0
-							   row_val << counter	
-						    end
-							counter = 0
-						end
-
-
-						
-						
-					end	  
-					
-					#if key == rr
-					#row_val << value
-					#end    
-					#if key == qq
-					#row_val1 << value
-					#end  	
-				end
-
-			counter = counter + 1
-			
-			end
-
-			
-			
+		column_names = []
+		row_names = []
+		#static_collection = "Sample_HW_Audit"
+		static_collection = "HW_Audit_Manual"
+	    #result = client[static_collection].find().limit(300) do |key, value|
+	    client[static_collection].find().limit(1).each do |document|
+	    #client[static_collection].find(:Region => "Pacific", :ProductName => "PDU0104").each do |document|
+	    	document.each do |key, value|
+	    		column_names << key
+	    	#	row_names << value
+	    	end
 	    end
+	    
+	    #byebug
+	    render json:{data: column_names}, status:200
+	    #render json:{data: [column_names, row_names]}, status:200
 
-	    #col_val1 = col_val
-	    #row_val1 = row_val
+	end
 
-	    #render json:{data:"success"}, status:200
-	    render json:{data:[col_val, row_val,col_val,row_val1]}, status:200
+	def static_plot_generation
 
+		result = []
+		label_data = []
+		static_collection = "HW_Audit_Manual"
+
+		result = client[static_collection].aggregate([ { '$match'=> { params[:filter1]=> 'Great Lakes' } }, 
+			{ '$match'=> { params[:filter2]=> 'DUS4102' } },{ '$unwind'=> '$Submarket'},
+			{ '$group'=> { '_id'=> '$Submarket', 'DUS4102'=> { '$sum'=> 1 } } },
+			{'$sort' => {'_id' => 1} }])
+
+		
+		result.each {|item| label_data << item }
+		x_axis_data = []
+		y_axis_data = []
+		label_data.each do |item|
+			x_axis_data << item["_id"]
+			y_axis_data << item[item.keys[1]]
+			#byebug
+		end
+		
+		#byebug
+		render json: { data: { x_axis: x_axis_data, y_axis: y_axis_data, chart_label: label_data.first.keys[1] }}, status:200
+	rescue NoMethodError => e
+		#byebug
+		render json: {error: e, data1: e}, status: :bad_request 
 	end
 
 

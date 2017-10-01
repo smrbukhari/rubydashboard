@@ -1,21 +1,43 @@
 
 <div class="container custom-container"> 
-<div class="row main_row" style="width: 100%; height: 350px;">
- <div class="row first_row" style="width: 100%; height: 350px;">
-  <div class="col-sm-6 black-outline">
-  <div id="static_plBarDiv1" style="width: 100%; height: 350px;"><!-- Plotly chart will be drawn inside this DIV --></div> </div>
-  <div class="col-sm-6 black-outline">
-  <div id="static_plBarDiv2" style="width: 100%; height: 350px;"><!-- Plotly chart will be drawn inside this DIV --></div> </div> </div>
- 
- <div class="row second_row" style="width: 100%; height: 350px;">
- <div class="col-sm-6 black-outline">
-  <div id="static_plBarDiv3" style="width: 100%; height: 350px;"><!-- Plotly chart will be drawn inside this DIV --></div> </div>
-  <div class="col-sm-6 black-outline">
-  <div id="static_plBarDiv4" style="width: 100%; height: 350px;"><!-- Plotly chart will be drawn inside this DIV --></div> </div>
- </div>
+ <div class="row main_row" style="width: 100%; height: 100%;">
+    <div class="col-sm-2 black-outline column1">
+        <div class="plBarDiv1_filters"> 
+            <select id="filter1"> 
+              <option>
+                Select Filter 1
+              </option>
+            </select>
+            <select id="filter2"> 
+              <option>
+                Select Filter 2
+              </option>
+            </select>
+            <button id="generate_plBarDiv1">
+              Plot 
+            </button>
+          </div>
+      </div>
+  	<div class="col-sm-5 black-outline column2">
+      <div class="row first_row_by_2" style="width: 100%; height: 100%;">
+  			<div id="static_plBarDiv1" style="width: 100%; height: 100%;"><!-- Plotly chart will be drawn inside this DIV -->   
+        </div>
+  		</div>
+      <div class="row second_row_by_2" style="width: 100%; height: 100%;">
+          <div id="static_plBarDiv2" style="width: 100%; height: 100%;"><!-- Plotly chart will be drawn inside this DIV -->
+          </div> 
+      </div> 
+    </div>
+    <div class="col-sm-5 black-outline column3">
+      <div class="row first_row_by_3" style="width: 100%; height: 100%;">
+        <div id="static_plBarDiv3" style="width: 100%; height: 100%;">
+        </div> 
+      </div>
+      <div class="row second_row_by_3" style="width: 100%; height: 100%;">
+        <div id="static_plBarDiv4" style="width: 100%; height: 100%;">
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-</div>
 
-
-
-<!-- <div id="static_plBarDiv" style="width: 100%; height: 350px;"></div>  -->

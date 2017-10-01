@@ -42,6 +42,8 @@ gem 'mongo', '~> 2.4'
 
 gem 'jquery-datatables-rails', '~> 3.4.0'
 
+gem 'better_errors'
+
 #gem 'byebug', '~> 9.0', '>= 9.0.5'
 
 # Use ActiveModel has_secure_password

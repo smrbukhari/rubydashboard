@@ -7,6 +7,17 @@ class ApplicationController < ActionController::Base
   	analytics_path
   end
 
+  def client 
+	client_host = ['localhost:27017']
+	client_options = {
+				database: 'development',
+				user: 'mydbuser',
+				password: 'dbuser'
+			}	
+	Mongo::Client.new(client_host, client_options)
+  end
+
+
 end
 
 

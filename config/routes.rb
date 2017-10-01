@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   get 'demo' => 'demo#index'
   get 'bidash' => 'demo#bi_dashboard'
   get 'bidash_hw_audit' => 'demo#bi_dashboard_hw_audit'
+  get 'static_plot_generation' => 'demo#static_plot_generation'
   get 'plotly_line_api' => 'analytics#line_chart_data'
   get 'plotly_map_api' => 'demo#map_data'
   get 'headers' => 'analytics#data_values'
