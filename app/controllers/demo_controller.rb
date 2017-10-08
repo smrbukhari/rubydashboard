@@ -49,9 +49,9 @@ class DemoController < ApplicationController
 		label_data = []
 		static_collection = "HW_Audit_Manual"
 
-		result = client[static_collection].aggregate([ { '$match'=> { params[:filter1]=> 'Great Lakes' } }, 
-			{ '$match'=> { params[:filter2]=> 'DUS4102' } },{ '$unwind'=> '$Submarket'},
-			{ '$group'=> { '_id'=> '$Submarket', 'DUS4102'=> { '$sum'=> 1 } } },
+		result = client[static_collection].aggregate([ { '$match'=> { params[:filter1]=> params[:filter1_option].first } }, 
+			{ '$match'=> { params[:filter2]=> params[:filter2_option].first } },{ '$unwind'=> "$#{params[:filter3]}"},
+			{ '$group'=> { '_id'=> "$#{params[:filter3]}" , params[:filter2_option].first=> { '$sum'=> 1 } } },
 			{'$sort' => {'_id' => 1} }])
 
 		
@@ -65,11 +65,19 @@ class DemoController < ApplicationController
 		end
 		
 		#byebug
-		render json: { data: { x_axis: x_axis_data, y_axis: y_axis_data, chart_label: label_data.first.keys[1] }}, status:200
-	rescue NoMethodError => e
+		render json: { data: { x_axis: x_axis_data, y_axis: y_axis_data, chart_label: label_data.first.keys[1] }}, status: 200
+	#rescue NoMethodError => e
 		#byebug
-		render json: {error: e, data1: e}, status: :bad_request 
+	#	render json: {error: e, data1: e}, status: :bad_request 
 	end
+
+	def filter_sub_options
+		result = []
+		static_collection = "HW_Audit_Manual"
+		result = client[static_collection].find.distinct(params[:filter])
+		render json: {data: result}, status: 200
+	end
+
 
 
 	def line_chart_data

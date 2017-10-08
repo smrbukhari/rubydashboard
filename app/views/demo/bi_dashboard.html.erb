@@ -3,16 +3,32 @@
  <div class="row main_row" style="width: 100%; height: 100%;">
     <div class="col-sm-2 black-outline column1">
         <div class="plBarDiv1_filters"> 
-            <select id="filter1"> 
+            <select class="selectFilter" id="filter1"> 
               <option>
                 Select Filter 1
               </option>
             </select>
-            <select id="filter2"> 
+            <select class="selectSubFilter hidden" id="filter1_options" multiple="multiple"> 
+              <option>
+                Select Filter 1 Options
+              </option>
+            </select> 
+            <select class="selectFilter" id="filter2"> 
               <option>
                 Select Filter 2
               </option>
             </select>
+            <select class="selectSubFilter hidden" id="filter2_options" multiple="multiple"> 
+              <option>
+                Select Filter 2 Options
+              </option>
+            </select>
+            </select> 
+            <select class="selectFilter" id="filter3"> 
+              <option>
+                GroupBy
+              </option>
+            </select>            
             <button id="generate_plBarDiv1">
               Plot 
             </button>
