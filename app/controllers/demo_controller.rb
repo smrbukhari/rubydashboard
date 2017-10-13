@@ -48,12 +48,17 @@ class DemoController < ApplicationController
 		result = []
 		label_data = []
 		static_collection = "HW_Audit_Manual"
-
-		result = client[static_collection].aggregate([ { '$match'=> { params[:filter1]=> params[:filter1_option].first } }, 
-			{ '$match'=> { params[:filter2]=> params[:filter2_option].first } },
-			{ '$unwind'=> "$#{params[:filter3]}"},
-			{ '$group'=> { '_id'=> "$#{params[:filter3]}" , params[:filter2_option].first=> { '$sum'=> 1 } } },
-			{'$sort' => {'_id' => 1} }])
+		filter1_match = { '$match'=> { params[:filter1]=> { '$in' => params[:filter1_option] } } }
+		filter2_match = { '$match'=> { params[:filter2]=> { '$in' => params[:filter2_option] } } }
+		unwind = { '$unwind'=> "$#{params[:filter3]}"}
+		group_by = { '$group'=> { '_id'=> "$#{params[:filter3]}" , "Product(s)"=> { '$sum'=> 1 } } }
+		sort_asc = {'$sort' => {'_id' => 1} } 
+		result = client[static_collection].aggregate([ 
+			filter1_match, 
+			filter2_match,
+			unwind,
+			group_by,
+			sort_asc])
 
 		
 		result.each {|item| label_data << item }
