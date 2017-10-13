@@ -36,6 +36,35 @@ $(document).ready(function(){
     var filterHandler = new FilterHelperHandler('filter2_options');
     filterHandler.fetchSubOptions($(this));
   });
+  $('#filter1_options_select_all').change(function(){
+    
+    if(this.checked){
+      $('#filter1_options').val($('#filter1_options').data('all-options'));
+      $('#filter1_options').trigger('change');
+      
+    } 
+
+    else {
+      console.log("unchecked");
+      $('#filter1_options').val('');
+      $('#filter1_options').trigger('change');
+    }
+  });
+
+  $('#filter2_options_select_all').change(function(){
+    
+    if(this.checked){
+      $('#filter2_options').val($('#filter2_options').data('all-options'));
+      $('#filter2_options').trigger('change');
+      
+    } 
+
+    else {
+      console.log("unchecked");
+      $('#filter2_options').val('');
+      $('#filter2_options').trigger('change');
+    }
+  });
 
 
   $("#generate_plBarDiv1").click(function(){

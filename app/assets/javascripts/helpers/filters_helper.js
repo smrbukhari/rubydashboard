@@ -14,22 +14,6 @@ var FilterHelperHandler = function(element_id) {
 };
 
 FilterHelperHandler.prototype = {
-  //element_id: this.element_id,
-  handleSuccess: function(response) {
-    //console.log(this);
-    //console.log(this.element_id);
-    var filter_options_element = document.getElementById(this.element_id);
-
-     FiltersHelper.clearSelectOptions(filter_options_element);
-     response.data.forEach(function(element){
-       filter_options_element.options[filter_options_element.options.length] = new Option(element, element);
-     });
-     var jquery_elem = $('#' + this.element_id);
-     jquery_elem.prop('disabled', false);
-     jquery_elem.select2();
-     jquery_elem.trigger('change');
-  },
-
   handleError: function(response, element){
    alert('Filter Selection is incorrect!');
   },
@@ -43,10 +27,13 @@ FilterHelperHandler.prototype = {
       success: function(response) {
         var filter_options_element = document.getElementById(that.element_id);
          FiltersHelper.clearSelectOptions(filter_options_element);
+         var all_options = [];
          response.data.forEach(function(element){
            filter_options_element.options[filter_options_element.options.length] = new Option(element, element);
+           all_options.push(element);
          });
          var jquery_elem = $('#' + that.element_id);
+         jquery_elem.data('all-options', all_options);
          jquery_elem.prop('disabled', false);
          jquery_elem.select2();
          jquery_elem.trigger('change');
