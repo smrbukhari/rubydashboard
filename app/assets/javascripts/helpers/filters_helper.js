@@ -5,32 +5,53 @@ var FiltersHelper = {
       element.options.remove(0);
     }
   },
-  handleSuccess: function(element){
-   var filter1_options = document.getElementById('filter1_options');
-    FiltersHelper.clearSelectOptions(filter1_options);
-    response.data.forEach(function(element){
-      filter1_options.options[filter1_options.options.length] = new Option(element,element); 
-    });
-    $('#filter1_options').prop('disabled',false);
-    $('#filter1_options').select2();
-    $('#filter1_options').trigger("change"); 
+};
+
+var FilterHelperHandler = function(element_id) {
+  this.element_id = element_id;
+  //console.log(this.element_id);
+
+};
+
+FilterHelperHandler.prototype = {
+  //element_id: this.element_id,
+  handleSuccess: function(response) {
+    //console.log(this);
+    //console.log(this.element_id);
+    var filter_options_element = document.getElementById(this.element_id);
+
+     FiltersHelper.clearSelectOptions(filter_options_element);
+     response.data.forEach(function(element){
+       filter_options_element.options[filter_options_element.options.length] = new Option(element, element);
+     });
+     var jquery_elem = $('#' + this.element_id);
+     jquery_elem.prop('disabled', false);
+     jquery_elem.select2();
+     jquery_elem.trigger('change');
   },
 
-  fetchSubOptions: function(element){
+  handleError: function(response, element){
+   alert('Filter Selection is incorrect!');
+  },
+
+  fetchSubOptions: function(this_element){
+    var that = this;
     $.ajax({
-      url: '/filter_sub_options?filter=' + $(this).val(),
+      url: '/filter_sub_options?filter=' + this_element.val(),
       type: "get",
       datatype: "json",
-      success: function (response) {
-           
+      success: function(response) {
+        var filter_options_element = document.getElementById(that.element_id);
+         FiltersHelper.clearSelectOptions(filter_options_element);
+         response.data.forEach(function(element){
+           filter_options_element.options[filter_options_element.options.length] = new Option(element, element);
+         });
+         var jquery_elem = $('#' + that.element_id);
+         jquery_elem.prop('disabled', false);
+         jquery_elem.select2();
+         jquery_elem.trigger('change');
       },//success closing
-
-      error: function (response){
-        //console.log(response);
-        alert('Filter Selection is incorrect!');
-      }
+      error: this.handleError,
     });
   },
-}
-
-
+};

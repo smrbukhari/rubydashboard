@@ -28,51 +28,13 @@ function static_plots() {
 $(document).ready(function(){
 
   $("#filter1").change(function(){
-    $.ajax({
-        url: '/filter_sub_options?filter=' + $(this).val(),
-        type: "get",
-        datatype: "json",
-        success: function (response) {
-          var filter1_options = document.getElementById('filter1_options');
-          FiltersHelper.clearSelectOptions(filter1_options);
-          response.data.forEach(function(element){
-            filter1_options.options[filter1_options.options.length] = new Option(element,element); 
-          });
-          $('#filter1_options').prop('disabled',false);
-          $('#filter1_options').select2();
-          $('#filter1_options').trigger("change");       
-
-        },//success closing
-
-        error: function (response){
-          //console.log(response);
-          alert('Filter Selection is incorrect!');
-        }
-    });
+    var filterHandler = new FilterHelperHandler('filter1_options');
+    filterHandler.fetchSubOptions($(this));
   });
 
   $("#filter2").change(function(){
-    $.ajax({
-        url: '/filter_sub_options?filter=' + $(this).val(),
-        type: "get",
-        datatype: "json",
-        success: function (response) {
-        //  console.log(response);
-          response.data.forEach(function(element){
-            var filter2_options = document.getElementById('filter2_options');
-            filter2_options.options[filter2_options.options.length] = new Option(element,element); 
-          });
-          $('#filter2_options').prop('disabled',false);
-          $('#filter2_options').select2(); 
-          $('#filter2_options').trigger("change");       
-
-        },//success closing
-
-        error: function (response){
-          //console.log(response);
-          alert('Filter Selection is incorrect!');
-        }
-    });
+    var filterHandler = new FilterHelperHandler('filter2_options');
+    filterHandler.fetchSubOptions($(this));
   });
 
 
