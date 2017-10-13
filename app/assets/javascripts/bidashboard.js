@@ -15,6 +15,8 @@ function static_plots() {
         filter2.options[filter2.options.length] = new Option(element,element);
         filter3.options[filter3.options.length] = new Option(element,element);
         $('.selectFilter').select2(); //initialize Select 2
+        $('#filter1_options').select2();
+        $('#filter2_options').select2();
       });
     }, //success closing
 
@@ -36,7 +38,7 @@ $(document).ready(function(){
           response.data.forEach(function(element){
             filter1_options.options[filter1_options.options.length] = new Option(element,element); 
           });
-          $('#filter1_options').removeClass('hidden');
+          $('#filter1_options').prop('disabled',false);
           $('#filter1_options').select2();
           $('#filter1_options').trigger("change");       
 
@@ -60,8 +62,9 @@ $(document).ready(function(){
             var filter2_options = document.getElementById('filter2_options');
             filter2_options.options[filter2_options.options.length] = new Option(element,element); 
           });
-          $('#filter2_options').removeClass('hidden');
-          $('#filter2_options').select2();       
+          $('#filter2_options').prop('disabled',false);
+          $('#filter2_options').select2(); 
+          $('#filter2_options').trigger("change");       
 
         },//success closing
 

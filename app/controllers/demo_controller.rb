@@ -50,7 +50,8 @@ class DemoController < ApplicationController
 		static_collection = "HW_Audit_Manual"
 
 		result = client[static_collection].aggregate([ { '$match'=> { params[:filter1]=> params[:filter1_option].first } }, 
-			{ '$match'=> { params[:filter2]=> params[:filter2_option].first } },{ '$unwind'=> "$#{params[:filter3]}"},
+			{ '$match'=> { params[:filter2]=> params[:filter2_option].first } },
+			{ '$unwind'=> "$#{params[:filter3]}"},
 			{ '$group'=> { '_id'=> "$#{params[:filter3]}" , params[:filter2_option].first=> { '$sum'=> 1 } } },
 			{'$sort' => {'_id' => 1} }])
 
