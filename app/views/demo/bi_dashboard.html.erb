@@ -1,4 +1,6 @@
 
+<%= javascript_include_tag 'exclusive/bidashboard' %> <!-- load page specific JS !-->
+<%= javascript_include_tag 'exclusive/select2.min' %> <!-- load page specific JS !-->
 <div class="container custom-container"> 
  <div class="row main_row" style="width: 100%; height: 100%;">
     <div class="col-sm-2 black-outline column1">
@@ -24,7 +26,7 @@
                 Select Filter 2 Options
               </option>
             </select>
-            <input type="checkbox" id="filter2_options_select_all" />
+            <input type="checkbox" id="filter2_options_select_all" checked="false" />
             </select> 
             <select class="selectFilter" id="filter3"> 
               <option>

@@ -26,7 +26,7 @@ function static_plots() {
 }; //function close
 
 $(document).ready(function(){
-
+  static_plots();
   $("#filter1").change(function(){
     var filterHandler = new FilterHelperHandler('filter1_options');
     filterHandler.fetchSubOptions($(this));
@@ -45,7 +45,7 @@ $(document).ready(function(){
     } 
 
     else {
-      console.log("unchecked");
+      //console.log("unchecked");
       $('#filter1_options').val('');
       $('#filter1_options').trigger('change');
     }
@@ -60,7 +60,7 @@ $(document).ready(function(){
     } 
 
     else {
-      console.log("unchecked");
+      //console.log("unchecked");
       $('#filter2_options').val('');
       $('#filter2_options').trigger('change');
     }
