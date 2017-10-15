@@ -25,7 +25,7 @@ module Testapp
     config.assets.initialize_on_precompile = false
 
     config.generators do |g|
-    g.orm :active_record
+    g.orm :mongoid
     end
 
   end
