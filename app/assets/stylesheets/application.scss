@@ -17,3 +17,15 @@
 @import "interface/demo";
 @import "interface/analytics";
 @import "json-viewer";
+
+.row {
+  margin-left: 0px !important;
+  // margin-right: 0px !important;
+}
+.no-left-right-padding {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}
+.no-margin-bottom {
+  margin-bottom: 0px !important;
+}
