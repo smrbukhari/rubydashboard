@@ -8,7 +8,7 @@ var plBar0_1 = {
       //name: 'CPU Util', 
       type: 'bar',
       marker: {
-      color: 'rgb(49,130,189)',
+      color: 'rgb(128,0,0)',
       opacity: 0.7,
       }
     };
@@ -18,7 +18,12 @@ var barData0 = [plBar0_1]
 var layoutBar0 = {
       title: response.data.chart_label,
       barmode: 'group', // can be "stack" also
+      //showlegend: true,
+      //legend: {
+      //  x: 0.2,
+      //  y: 0.5,
 
+      //},
       xaxis: {
         title: $('#filter1').val(),
         titlefont: {

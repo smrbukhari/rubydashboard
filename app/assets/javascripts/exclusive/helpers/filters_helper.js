@@ -9,8 +9,6 @@ var FiltersHelper = {
 
 var FilterHelperHandler = function(element_id) {
   this.element_id = element_id;
-  //console.log(this.element_id);
-
 };
 
 FilterHelperHandler.prototype = {

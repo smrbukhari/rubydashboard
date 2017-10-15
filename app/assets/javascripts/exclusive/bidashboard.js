@@ -26,6 +26,8 @@ function static_plots() {
 }; //function close
 
 $(document).ready(function(){
+  $('#filter1_options_select_all').prop('checked', false);
+  $('#filter2_options_select_all').prop('checked', false);
   static_plots();
   $("#filter1").change(function(){
     var filterHandler = new FilterHelperHandler('filter1_options');

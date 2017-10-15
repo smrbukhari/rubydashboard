@@ -36,17 +36,16 @@ $(window).load(function (){
       }
 
       if(this.value == 'mapid'){
-      	$('.col-sm-6').append("<div id='mapid'></div>");
-      	geo_function();
+        $('.col-sm-6').append("<div id='mapid'></div>");
+        geo_function();
         }
       else{
-      	$('#mapid').remove();
-       	rem_map();
-      	$('#' + this.value).css('display', 'block'); //main code to switch between graphs
-       	plotly_function();
-      }		
+        $('#mapid').remove();
+        rem_map();
+        $('#' + this.value).css('display', 'block'); //main code to switch between graphs
+        plotly_function();
+      }   
     });  //closing dropdown change*/ 
-
 	
 		$('#data').addClass("active"); // to make Data active on document ready
 		$('#data_tab').addClass("active"); // to make Data active on document ready
