@@ -1,11 +1,11 @@
 function plotlyBarChart(response) {
 var plBar0_1 = {
-    //x: response.data[1], 
+    //x: response.data[1],
       x: response.data.x_axis, //col_val,
       y: response.data.y_axis, //row_val,
       name: response.data.chart_label,
       //y: response.data[0],
-      //name: 'CPU Util', 
+      //name: 'CPU Util',
       type: 'bar',
       marker: {
       color: 'rgb(128,0,0)',
@@ -35,7 +35,7 @@ var layoutBar0 = {
       yaxis: {
         title: "Count of " + $('#filter2').val(),
         titlefont: {
-          family: 'Courier New, monospace',  
+          family: 'Courier New, monospace',
           size: 16,
           color: '#7f7f7f'
         },
@@ -43,5 +43,10 @@ var layoutBar0 = {
 };
 
 Plotly.newPlot('static_plBarDiv1', barData0, layoutBar0);
+var update = {
+  height: 350  // " "
+};
+Plotly.relayout('static_plBarDiv1', update);
+
 
 };

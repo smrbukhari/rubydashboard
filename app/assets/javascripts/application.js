@@ -1,3 +1,4 @@
+//= require BiSquare
 //= require jquery
 //= require loadingoverlay.min.js
 //= require loadingoverlay_progress.min.js

@@ -1,3 +1,4 @@
+<%= javascript_include_tag 'exclusive/helpers/bi_dashboard_helper' %>
 <%= javascript_include_tag 'exclusive/bidashboard' %> <!-- load page specific JS !-->
 <%= javascript_include_tag 'exclusive/select2.min' %> <!-- load page specific JS !-->
 <%= javascript_include_tag 'exclusive/helpers/filters_helper' %>
@@ -13,7 +14,8 @@
           </option>
         </select>
       </div>
-      <input type="checkbox" id="filter1_options_select_all" checked="false"/>
+      <div class="row">&nbsp;</div>
+      <input type="checkbox" id="filter1_options_select_all" checked="false" disabled/> Select All SubFilter 1 Options
       <div class="row">
         <select class="selectSubFilter" id="filter1_options" multiple="multiple" disabled style="max-width:140px;">
           <option value="placeholder_text">
@@ -21,6 +23,7 @@
           </option>
         </select>
       </div>
+      <div class="row">&nbsp;</div>
       <div class="row">
         <select class="selectFilter" id="filter2" style="max-width:140px;">
           <option>
@@ -28,7 +31,8 @@
           </option>
         </select>
       </div>
-      <input type="checkbox" id="filter2_options_select_all" checked="false" />
+      <div class="row">&nbsp;</div>
+      <input type="checkbox" id="filter2_options_select_all" checked="false" disabled/> Select All SubFilter 2 Options
       <div class="row">
         <select class="selectSubFilter" id="filter2_options" multiple="multiple" disabled style="max-width:140px;">
           <option value="placeholder_text">
@@ -36,6 +40,7 @@
           </option>
         </select>
       </div>
+      <div class="row">&nbsp;</div>
       <div class="row">
         <select class="selectFilter" id="filter3" style="max-width:140px;">
           <option>
@@ -43,7 +48,8 @@
           </option>
         </select>
       </div>
-      <button id="generate_plBarDiv1">
+      <div class="row">&nbsp;</div>
+      <button id="generate_plBarDiv1" class="btn btn-primary">
         Plot
       </button>
     </div>
