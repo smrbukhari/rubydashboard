@@ -5,7 +5,7 @@
 <%= javascript_include_tag 'exclusive/plotlyBarChart' %> <!-- load page specific JS !-->
 
 <div class="row main_row">
-  <div class="col-sm-2 well black-outline column1">
+  <div class="col-sm-2 well column1">
     <div class="plBarDiv1_filters">
       <div class="row">
         <select class="selectFilter" id="filter1" style="max-width:140px;">
@@ -45,6 +45,15 @@
         <select class="selectFilter" id="filter3" style="max-width:140px;">
           <option>
             GroupBy
+          </option>
+        </select>
+      </div>
+      <div class="row">&nbsp;</div>
+      <div class="row">
+        <p> Default Selection "AddToSet" shows Duplicates</p>
+        <select class="selectFilter" id="filter4" style="max-width:140px;">
+          <option>
+            AddToSet
           </option>
         </select>
       </div>

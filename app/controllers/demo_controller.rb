@@ -52,13 +52,24 @@ class DemoController < ApplicationController
 		filter2_match = { '$match'=> { params[:filter2]=> { '$in' => params[:filter2_option] } } }
 		unwind = { '$unwind'=> "$#{params[:filter3]}"}
 		group_by = { '$group'=> { '_id'=> "$#{params[:filter3]}" , "Product(s)"=> { '$sum'=> 1 } } }
+		group_by_with_addtoset = { '$group'=> { '_id'=> '$Submarket', 'uniqueCount' => { '$addToSet' => { params[:filter4] => "$#{params[:filter4]}", params[:filter2] => "$#{params[:filter2]}" } }, "Product(s)" => { '$sum'=> 1 } } }
+		project = { '$project' => { 'uniqueNodeNameCount' => { '$size' => '$uniqueCount' } }}
 		sort_asc = {'$sort' => {'_id' => 1} } 
-		result = client[static_collection].aggregate([ 
-			filter1_match, 
-			filter2_match,
-			unwind,
-			group_by,
-			sort_asc])
+
+    aggregate_pipeline = []
+    aggregate_pipeline << filter1_match  
+    aggregate_pipeline << filter2_match 
+    aggregate_pipeline << unwind
+
+    if params[:filter4] != 'AddToSet' 
+    	aggregate_pipeline << group_by_with_addtoset
+    	aggregate_pipeline << project
+    else 
+    	aggregate_pipeline << group_by
+    end
+
+    aggregate_pipeline << sort_asc	
+		result = client[static_collection].aggregate(aggregate_pipeline)
 
 		
 		result.each {|item| label_data << item }

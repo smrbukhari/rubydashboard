@@ -3,8 +3,6 @@ function plotlyBarChart(response) {
     x: response.data.x_axis, //col_val,
     y: response.data.y_axis, //row_val,
     name: response.data.chart_label,
-    //y: response.data[0],
-    //name: 'CPU Util',
     type: 'bar',
     marker: {
       color: 'rgb(128,0,0)',
@@ -31,7 +29,7 @@ function plotlyBarChart(response) {
       }
     },
     yaxis: {
-      title: "Count of " + $('#filter2').val(),
+      title: "Count of " + $('#filter4').val(),
       titlefont: {
         family: 'Courier New, monospace',
         size: 16,

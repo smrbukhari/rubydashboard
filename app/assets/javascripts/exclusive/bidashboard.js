@@ -7,7 +7,7 @@ $(document).ready(function(){
   BiSquare.FiltersHelper.handleSelectAllCheckAndUncheck('filter2_options_select_all', 'filter2_options');
 
   $("#generate_plBarDiv1").click(function() {
-    BiSquare.BiDashboardHelper.staticPlotGeneration({filter1Id: 'filter1', filter2Id: 'filter2', filter3Id: 'filter3',
+    BiSquare.BiDashboardHelper.staticPlotGeneration({filter1Id: 'filter1', filter2Id: 'filter2', filter3Id: 'filter3', filter4Id: 'filter4',
       subFilter1Id: 'filter1_options', subFilter2Id: 'filter2_options'});
   });
 });
