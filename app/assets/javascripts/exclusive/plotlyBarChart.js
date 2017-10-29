@@ -1,6 +1,5 @@
 function plotlyBarChart(response) {
 var plBar0_1 = {
-    //x: response.data[1],
       x: response.data.x_axis, //col_val,
       y: response.data.y_axis, //row_val,
       name: response.data.chart_label,
@@ -42,11 +41,16 @@ var layoutBar0 = {
       }
 };
 
-Plotly.newPlot('static_plBarDiv1', barData0, layoutBar0);
-var update = {
-  height: 350  // " "
-};
-Plotly.relayout('static_plBarDiv1', update);
+  var update = {
+    width: 480,  // or any new width
+    height: 350  // " "
+  };
 
+  //Plotly.relayout('static_plBarDiv1', update);
 
+  Plotly.newPlot('static_plBarDiv1', barData0, layoutBar0);
+    var update = {
+      height: 350  // " "
+    };
+  Plotly.relayout('static_plBarDiv1', update);
 };
