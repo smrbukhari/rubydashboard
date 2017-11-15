@@ -32,6 +32,7 @@
         </select>
       </div>
       <div class="row">&nbsp;</div>
+      <hr/>
       <input type="checkbox" id="filter2_options_select_all" checked="false" disabled/> Select All SubFilter 2 Options
       <div class="row">
         <select class="selectSubFilter" id="filter2_options" multiple="multiple" disabled style="max-width:140px;">
@@ -41,6 +42,14 @@
         </select>
       </div>
       <div class="row">&nbsp;</div>
+      <div class="row">
+        <label for="default_union"><input type="radio" name="mutually_inclusive_or_exclusive" value="default" checked="true"/>Default(Union)</label>
+        <br/>
+        <label for="intersection"><input type="radio" name="mutually_inclusive_or_exclusive" value="default" checked="false"/>Intersection</label>
+      </div>
+      <div class="row">
+        <hr/>
+      </div>
       <div class="row">
         <select class="selectFilter" id="filter3" style="max-width:140px;">
           <option>
