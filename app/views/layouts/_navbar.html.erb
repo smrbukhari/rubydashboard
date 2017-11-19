@@ -18,10 +18,10 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-      <% if request.env['PATH_INFO'] == "/bidash" %>
-        <li class="active"><a href="/bidash">Dashboard <span class="sr-only">(current)</span></a></li>
+      <% if request.env['PATH_INFO'] == ericsson_hw_inv_audit_index_path %>
+        <li class="active"><a href="<%= ericsson_hw_inv_audit_index_path %>">Dashboard <span class="sr-only">(current)</span></a></li>
         <% else %>
-        <li><a href="/bidash">Dashboard<span class="sr-only">(current)</span></a></li>
+        <li><a href="<%= ericsson_hw_inv_audit_index_path %>">Dashboard<span class="sr-only">(current)</span></a></li>
         <% end %>
         <% if !current_user.nil? %>
           <li><a href="/analytics">Analytics</a></li>

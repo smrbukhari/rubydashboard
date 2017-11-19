@@ -47,29 +47,15 @@ class DemoController < ApplicationController
 
 		result = []
 		label_data = []
-		static_collection = "HW_Audit_Manual"
-		filter1_match = { '$match'=> { params[:filter1]=> { '$in' => params[:filter1_option] } } }
-		filter2_match = { '$match'=> { params[:filter2]=> { '$in' => params[:filter2_option] } } }
-		unwind = { '$unwind'=> "$#{params[:filter3]}"}
-		group_by = { '$group'=> { '_id'=> "$#{params[:filter3]}" , "Product(s)"=> { '$sum'=> 1 } } }
-		group_by_with_addtoset = { '$group'=> { '_id'=> '$Submarket', 'uniqueCount' => { '$addToSet' => { params[:filter4] => "$#{params[:filter4]}", params[:filter2] => "$#{params[:filter2]}" } }, "Product(s)" => { '$sum'=> 1 } } }
-		project = { '$project' => { 'uniqueNodeNameCount' => { '$size' => '$uniqueCount' } }}
-		sort_asc = {'$sort' => {'_id' => 1} } 
+		@static_collection = "HW_Audit_Manual"
+		@filter1_match = { '$match'=> { params[:filter1]=> { '$in' => params[:filter1_option] } } }
+		@filter2_match = { '$match'=> { params[:filter2]=> { '$in' => params[:filter2_option] } } }
+		result = if intersection?
+							 intersection_filter2_query
+						 else
+						 	 default_filter2_query
+						 end
 
-    aggregate_pipeline = []
-    aggregate_pipeline << filter1_match  
-    aggregate_pipeline << filter2_match 
-    aggregate_pipeline << unwind
-
-    if params[:filter4] != 'AddToSet' 
-    	aggregate_pipeline << group_by_with_addtoset
-    	aggregate_pipeline << project
-    else 
-    	aggregate_pipeline << group_by
-    end
-
-    aggregate_pipeline << sort_asc	
-		result = client[static_collection].aggregate(aggregate_pipeline)
 
 		
 		result.each {|item| label_data << item }
@@ -88,12 +74,44 @@ class DemoController < ApplicationController
 	#	render json: {error: e, data1: e}, status: :bad_request 
 	end
 
+	def intersection?
+		params[:mutually_inclusive_or_exclusive] == "intersection"
+	end
+
+	def default_filter2_query
+		unwind = { '$unwind'=> "$#{params[:filter3]}"}
+		group_by = { '$group'=> { '_id'=> "$#{params[:filter3]}" , "Product(s)"=> { '$sum'=> 1 } } }
+		group_by_with_addtoset = { '$group'=> { '_id'=> "$#{params[:filter3]}", 'uniqueCount' => { '$addToSet' => { params[:filter4] => "$#{params[:filter4]}", params[:filter2] => "$#{params[:filter2]}" } }, "Product(s)" => { '$sum'=> 1 } } }
+		project = { '$project' => { 'uniqueNodeNameCount' => { '$size' => '$uniqueCount' } }}
+		sort_asc = {'$sort' => {'_id' => 1} } 
+
+    aggregate_pipeline = []
+    aggregate_pipeline << @filter1_match  
+    aggregate_pipeline << @filter2_match 
+    aggregate_pipeline << unwind
+
+    if params[:filter4] != 'AddToSet' 
+    	aggregate_pipeline << group_by_with_addtoset
+    	aggregate_pipeline << project
+    else 
+    	aggregate_pipeline << group_by
+    end
+
+    aggregate_pipeline << sort_asc	
+		#result = client[static_collection].aggregate(aggregate_pipeline)
+		client[@static_collection].aggregate(aggregate_pipeline)
+	end
+
+	def intersection_filter2_query
+	end
+
 	def filter_sub_options
 		result = []
 		static_collection = "HW_Audit_Manual"
 		result = client[static_collection].find.distinct(params[:filter])
 		render json: {data: result}, status: 200
 	end
+
 
 
 
