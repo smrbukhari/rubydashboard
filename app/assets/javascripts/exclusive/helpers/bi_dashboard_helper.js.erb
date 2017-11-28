@@ -34,7 +34,8 @@ BiSquare.BiDashboardHelper = {
         type: "get",
         datatype: "json",
         success: function(response) {
-          plotlyBarChart(response);
+          plotlyBarChart(response, 'static_plBarDiv1');
+          plotlyBarChart(response, 'static_plBarDiv2');
         },//success closing
         error: function(response) {
           alert('Filter Selection is incorrect!');

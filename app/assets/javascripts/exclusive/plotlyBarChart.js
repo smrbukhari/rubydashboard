@@ -1,4 +1,4 @@
-function plotlyBarChart(response) {
+function plotlyBarChart(response, containerId) {
   var plBar0_1 = {
     x: response.data.x_axis, //col_val,
     y: response.data.y_axis, //row_val,
@@ -38,9 +38,9 @@ function plotlyBarChart(response) {
     }
   };
 
-  Plotly.newPlot('static_plBarDiv1', barData0, layoutBar0);
+  Plotly.newPlot(containerId, barData0, layoutBar0);
   var update = {
     height: 350  // " "
   };
-  Plotly.relayout('static_plBarDiv1', update);
+  Plotly.relayout(containerId, update);
 };
