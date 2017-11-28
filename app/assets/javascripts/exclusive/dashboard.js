@@ -2,7 +2,7 @@
 
    function plotly_function(colname,rowname,lastcollection) {
 
-   	var col_array = [];
+  var col_array = [];
 	var row_array = [];
 	//var date_time = [];
 	//var mem_usage = [];
@@ -16,22 +16,7 @@ $.ajax({
     url: "/plotly_line_api?lastcollection_name=" + lastcollection + "&colname="+ colname + "&rowname=" + rowname,
     type: "get",
     datatype: "json",
- //   data: JSON.stringify(data),
- //   headers: {"content-type": "application/json"},
     success: function (response) {
-    	//alert ("success")
-
-    	/*for (i = 0; i < response.data.length; i++)
-    	{ */
-    	 /*	cpu_idle.push(response.data[i].cpu_idle);
-    		cpu_util.push(response.data[i].cpu_util);
-    		date_time.push(response.data[i].date_time);
-    		mem_usage.push(response.data[i].mem_usage);*/
-    	//	alert(response.data[i].mem_usage);
-
-    	//}
-    	//alert("colname:" + colname + "  " + "rowname:" + rowname+ "  " + lastcollection)
-     //   alert ("success");
      var x_axis = [];
      var y_axis = [];
      response.data.forEach(function(item) {
@@ -42,23 +27,21 @@ $.ajax({
      })
        //Define Plotly varaibles
     	var plLine1 = {
- 		x: x_axis,
-  		y: y_axis,
-  		//name: 'CPU Util',
-  		type: 'scatter',
-  		mode: 'lines',
-  		line: {shape: 'linear', width: 2}
+   		   x: x_axis,
+      	 y: y_axis,
+      	 type: 'scatter',
+      	 mode: 'lines',
+      	 line: {shape: 'linear', width: 2}
+	    };
 
-		};
-
-    // 	var plLine2 = {
- 	// 	x: response.data[1],
-  	// 	y: response.data[0],
-  	// 	//name: 'CPU Idle',
-  	// 	type: 'scatter',
-  	// 	mode: 'lines',
-  	// 	line: { dash: 'dot',width: 2}
-		// };
+        // 	var plLine2 = {
+     	// 	x: response.data[1],
+      	// 	y: response.data[0],
+      	// 	//name: 'CPU Idle',
+      	// 	type: 'scatter',
+      	// 	mode: 'lines',
+      	// 	line: { dash: 'dot',width: 2}
+    		// };
 
 		var plArea1 = {
  		x: x_axis,
