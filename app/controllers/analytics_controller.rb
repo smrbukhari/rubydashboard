@@ -11,10 +11,7 @@ require 'date'
 	class AnalyticsController < ApplicationController
 	before_action :authenticate_user!
 	def index
-		@first_value = Tweet.first #use @ when variable used in page or by child objects
-		@headers = @first_value.attributes.keys if @first_value
-		@test_array = []
-		@test = SysmonTest.select('cpu_util, cpu_idle, date_time').order('date_time asc').limit(300)
+		
 	end
 
 
@@ -94,7 +91,6 @@ require 'date'
 	    	text_parser(filedata.tempfile,client,collectionname)
 	    end
 
-	    Mongobicollection.create(collectionname:collectionname,type_collection:filedata.content_type,user_id:current_user.id,db_name:"development")
 	    client[collectionname].find().each do |document|
 	    	client[collectionname].update_one({:_id => document["_id"]}, '$set' => {:biuser_id => current_user.id})
 	    	client[collectionname].update_one({:_id => document["_id"]}, '$set' => {:uploaded_at => Time.now.strftime("%e/%b/%Y %H:%M:%S %z")}) # use DateTime.parse(strftime) to parse the date
@@ -396,7 +392,6 @@ require 'date'
 	end
 
 	def line_chart_data
-		#test = SysmonTest.select('cpu_util, cpu_idle, date_time', 'mem_usage').order('date_time asc').limit(20)
 		qq = params["lastcollection_name"]
 		ss = params["colname"]
 		rr = params["rowname"]

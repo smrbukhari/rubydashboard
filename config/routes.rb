@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'home#index'
   resources :products #this is route named products, need to generate a controller for this also see rails generate controller
-  get 'analytics' => 'analytics#index'
+  
   get 'demo' => 'demo#index'
 
   namespace :ericsson do 
@@ -24,11 +24,11 @@ Rails.application.routes.draw do
   end
 
 
-  get 'plotly_line_api' => 'analytics#line_chart_data'
+ 
   get 'plotly_map_api' => 'demo#map_data'
 
 
-
+  get 'analytics' => 'analytics#index'
   get 'headers' => 'analytics#data_values'
   get 'displaydata' => 'analytics#data_display'
   get 'displayjson' => 'analytics#json_display'
@@ -37,6 +37,7 @@ Rails.application.routes.draw do
   get 'getcolumn' => 'analytics#get_columns'
   get 'usercollection' => 'analytics#user_collection'
   post 'upload' => 'analytics#data_upload'
+  get 'plotly_line_api' => 'analytics#line_chart_data'
 
 
   # Example of regular route:
