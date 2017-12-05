@@ -25,12 +25,6 @@ function geo_function() {
 
       //  alert ("success")
       post_data = response.data[0];
-      mongo_data = response.data[1];
-      mongo_data['coordinates']['coordinates'][0]
-      mongo_data['coordinates']['coordinates'][1]
-      mongo_data['created_at']
-      mongo_data['_id']
-
       for (i = 0; i < response.data[0].length; i++)
       {
         applicant.push(post_data[i].applicant);
