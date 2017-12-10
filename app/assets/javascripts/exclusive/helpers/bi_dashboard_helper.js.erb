@@ -15,7 +15,7 @@ BiSquare.BiDashboardHelper = {
   staticPlotGeneration: function(settings) {
     var filter1 = $('#' + settings.filter1Id), filter2 = $('#' + settings.filter2Id), filter3 = $('#' + settings.filter3Id), filter4 = $('#' + settings.filter4Id),
         filter1_options = $('#' + settings.subFilter1Id), filter2_options = $('#' + settings.subFilter2Id),
-        mutually_inclusive_or_exclusive = $("input[name='mutually_inclusive_or_exclusive']:checked") ;
+        mutually_inclusive_or_exclusive = $("input[name='mutually_inclusive_or_exclusive']:checked");
     if(filter1.val() == 'Select Filter 1' || filter2.val() == 'Select Filter 2' || filter3.val() == 'GroupBy')
     {
       alert('Please select plot options first');
