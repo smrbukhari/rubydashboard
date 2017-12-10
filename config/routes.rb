@@ -12,6 +12,11 @@ Rails.application.routes.draw do
   root 'home#index'
   resources :products #this is route named products, need to generate a controller for this also see rails generate controller
   
+  #get 'bidash' => 'demo#bi_dashboard'
+  #get 'bidash_hw_audit' => 'demo#bi_dashboard_hw_audit'
+  #get 'static_plot_generation' => 'demo#static_plot_generation'
+  #get 'filter_sub_options' => 'demo#filter_sub_options'
+
   get 'demo' => 'demo#index'
 
   namespace :ericsson do 
@@ -19,6 +24,7 @@ Rails.application.routes.draw do
       collection do
         get :column_names
         get :plot_one
+        get :filter_sub_options
       end
     end
   end

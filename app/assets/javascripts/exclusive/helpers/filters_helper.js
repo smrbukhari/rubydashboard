@@ -62,7 +62,7 @@ FilterHelperHandler.prototype = {
   fetchSubOptions: function(this_element){
     var that = this;
     $.ajax({
-      url: '/filter_sub_options?filter=' + this_element.val(),
+      url: '/ericsson/hw_inv_audit/filter_sub_options?filter=' + this_element.val(),
       type: "get",
       datatype: "json",
       success: function(response) {
