@@ -1,5 +1,0 @@
-
-<h3> CPU IDLE </h3>
-<%= line_chart @test.group(:date_time).sum(:cpu_idle), xtitle: "Time", ytitle: "Idle%",library: {backgroundColor: "#FFFF00"}, id: "Cpu-Idle", width: "500px", height: "300px"%>
-<h3> CPU Util </h3>
-<%= line_chart @test.group(:date_time).sum(:cpu_util), xtitle: "Time", ytitle: "Utilization%",library: {backgroundColor: "#FFFF00"}, id: "Cpu-Idle",id: "Cpu-Util", width: "500px", height: "300px" %>

@@ -21,6 +21,7 @@ Rails.application.routes.draw do
         get :column_names
         get :plot_one
         get :filter_sub_options
+        get :view_data
       end
     end
   end

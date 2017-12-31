@@ -5,6 +5,7 @@
 <%= javascript_include_tag 'exclusive/helpers/filters_helper' %>
 <%= javascript_include_tag 'exclusive/plotlyBarChart' %> <!-- load page specific JS !-->
 
+
 <div class="row main_row">
   <div class="col-sm-2 well column1">
     <div class="plBarDiv1_filters">
@@ -71,8 +72,8 @@
       <button id="generate_plBarDiv1" class="btn btn-primary">
         Plot
       </button>
-      <button id="" class="btn btn-success">
-        View Data
+      <button id= "viewDataButton" data-toggle="modal" data-target="#viewModal" class="btn btn-success">
+       View Data
       </button>
     </div>
   </div>
@@ -101,6 +102,28 @@
           <div id="mapid">
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal View Data-->
+<div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document" style="min-width: 900px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="exampleModalLabel"></h4>
+
+    <div id="viewDataTableDiv" class="display" style="width:100%; overflow-x: auto;"> 
+    </div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        
       </div>
     </div>
   </div>

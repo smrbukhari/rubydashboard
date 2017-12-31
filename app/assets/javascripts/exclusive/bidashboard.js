@@ -11,4 +11,14 @@ $(document).ready(function(){
     BiSquare.BiDashboardHelper.staticPlotGeneration({filter1Id: 'filter1', filter2Id: 'filter2', filter3Id: 'filter3', filter4Id: 'filter4',
       subFilter1Id: 'filter1_options', subFilter2Id: 'filter2_options'});
   });
+  $("#viewDataButton").click(function() {
+    $('#viewDataTableDiv').html('<table id="example" class="display" cellspacing="0"></table>');
+        $.ajax({
+          "url": 'http://localhost:3000/ericsson/hw_inv_audit/view_data',
+          "success": function (json){
+            $('#example').dataTable(json);
+          },
+          "dataType": "json"
+        }); // closing ajax under table div
+  });
 });

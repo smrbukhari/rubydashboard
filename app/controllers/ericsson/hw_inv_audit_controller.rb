@@ -73,6 +73,38 @@ module Ericsson
       render json: {data: result}, status: 200
     end
 
+    def view_data
+      key_array = []
+      collection_docs = []
+      #result = []
+      #@filter1_match = { '$match'=> { params[:filter1]=> { '$in' => params[:filter1_option] } } }
+      #@filter2_match = { '$match'=> { params[:filter2]=> { '$in' => params[:filter2_option] } } }
+      #result = if intersection?
+      #           intersection_filter2_query
+      #         else
+      #           default_filter2_query
+      #         end 
+      counter = 0
+      begin
+        client[Ericsson::COLLECTION_NAME].find.limit(100).each do |document| #limit 100 records
+        #result.each do |document|
+          docs = document.tap { |hs| hs.delete("_id") }
+          collection_docs << docs
+          if counter == 0
+            docs.each do |key, value|
+              if key != "biuser_id"
+                key_array << { title: key, data: key }
+              end
+            end # docs.each end
+          end # end if
+          counter = counter + 1
+        end # document end
+      rescue
+      end
+      render json: {columns:key_array,data:collection_docs,buttons:["excelHtml5","csvHtml5","pdfHtml5"],dom: "Bfrtip",processing: "true"}, status:200
+    end
+
+
     def map_data
       client_host = ['localhost:27017']
       client_options = {
