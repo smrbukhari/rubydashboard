@@ -37,6 +37,7 @@ BiSquare.BiDashboardHelper = {
           plotlyBarChart(response, 'static_plBarDiv1');
           plotlyBarChart(response, 'static_plBarDiv2');
           plotlyBarChart(response, 'static_plBarDiv3');
+          geo_function_ericsson(response.data.map_data);
         },//success closing
         error: function(response) {
           alert('Filter Selection is incorrect!');

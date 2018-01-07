@@ -19,8 +19,8 @@ module Ericsson
     def plot_one
       result = []
       label_data = []
-      @filter1_match = { '$match'=> { params[:filter1]=> { '$in' => params[:filter1_option] } } }
-      @filter2_match = { '$match'=> { params[:filter2]=> { '$in' => params[:filter2_option] } } }
+      @filter1_match = { '$match'=> { params[:filter1] => { '$in' => params[:filter1_option] } } }
+      @filter2_match = { '$match'=> { params[:filter2] => { '$in' => params[:filter2_option] } } }
       result = if intersection?
                  intersection_filter2_query
                else
@@ -31,12 +31,43 @@ module Ericsson
       y_axis_data = []
       label_data.each do |item|
         x_axis_data << item["_id"]
-        y_axis_data << item[item.keys[1]]    
-      end   
-      render json: { data: { x_axis: x_axis_data, y_axis: y_axis_data, chart_label: label_data.first.keys[1] }}, status: 200
+        y_axis_data << item[item.keys[1]]   
+      end 
+
+      # storing whatever is returned from query_map_data to map_data used by geolocation.js
+      map_data = query_map_data
+
+      render json: { data: { x_axis: x_axis_data, y_axis: y_axis_data, chart_label: label_data.first.keys[1], map_data: map_data }}, status: 200
       #rescue NoMethodError => e
       #byebug
       # render json: {error: e, data1: e}, status: :bad_request 
+    end
+
+    def query_map_data
+
+      query = client[Ericsson::COLLECTION_NAME].aggregate([
+        { '$match'=> { params[:filter1] => { '$in' => params[:filter1_option] } } },
+        { '$match'=> { params[:filter2] => { '$in' => params[:filter2_option] } } },
+        { '$lookup' =>
+             {
+               'from' => GEOLOCATION_COLLECTION_NAME,
+               'localField' => 'NodeName',
+               'foreignField' => 'eNodeB_Name',
+               'as' => 'output'
+             }},
+        { '$sort' => {'_id' => 1} }
+      ])
+      result = []
+      query.each do |document|
+        document['output'].each do |item|
+          result << {
+            nodename: item["eNodeB_Name"],
+            latitude: item["SL_Latitude"], 
+            longitude: item["SL_Longitude"],
+          } if item["SL_Latitude"].present? || item["SL_Longitude"].present? #inline if no else is required
+        end
+      end 
+      result
     end
 
     def intersection?
@@ -102,22 +133,6 @@ module Ericsson
       rescue
       end
       render json: {columns:key_array,data:collection_docs,buttons:["excelHtml5","csvHtml5","pdfHtml5"],dom: "Bfrtip",processing: "true"}, status:200
-    end
-
-
-    def map_data
-      client_host = ['localhost:27017']
-      client_options = {
-        database: 'development',
-        user: 'mydbuser',
-        password: 'dbuser'
-      }
-      client = Mongo::Client.new(client_host, client_options)
-      collection_docs = []
-      client["SF_Food_trucks"].find().each do |document|
-        collection_docs << document
-      end
-      render json:{data:[collection_docs]}, status:200
     end
   end
 end
