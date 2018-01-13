@@ -107,18 +107,16 @@ module Ericsson
     def view_data
       key_array = []
       collection_docs = []
-      #result = []
-      #@filter1_match = { '$match'=> { params[:filter1]=> { '$in' => params[:filter1_option] } } }
-      #@filter2_match = { '$match'=> { params[:filter2]=> { '$in' => params[:filter2_option] } } }
-      #result = if intersection?
-      #           intersection_filter2_query
-      #         else
-      #           default_filter2_query
-      #         end 
+      result = client[Ericsson::COLLECTION_NAME].aggregate([
+        { '$match'=> { 'Region' => { '$in' => ['Great Lakes'] } } },
+        { '$match'=> { 'ProductName' => { '$in' => ['DUS4101'] } } },
+        { '$sort' => {'_id' => 1} }
+      ])
       counter = 0
+      #byebug
       begin
-        client[Ericsson::COLLECTION_NAME].find.limit(100).each do |document| #limit 100 records
-        #result.each do |document|
+        #client[Ericsson::COLLECTION_NAME].find.limit(100).each do |document| #limit 100 records
+          result.each do |document|
           docs = document.tap { |hs| hs.delete("_id") }
           collection_docs << docs
           if counter == 0
