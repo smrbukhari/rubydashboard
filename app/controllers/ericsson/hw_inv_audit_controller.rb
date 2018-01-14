@@ -96,6 +96,23 @@ module Ericsson
     end
 
     def intersection_filter2_query
+    unwind = { '$unwind'=> "$#{params[:filter3]}"}
+    group_by = { '$group' => {'_id' => '$NodeName', 'ProductName' => {'$addToSet' => { 'pName' => '$ProductName'}} }}
+    project = { '$project' => { 'ProductName' => '$ProductName', 'len' => { '$size' => '$ProductName' } } }
+    project_pn = { '$project' => { 'PN' => { '$gt' => ['$len', 1] } }}
+    match_pn = { '$match' => { 'PN' => true } }
+    sort_asc = {'$sort' => {'_id' => 1} } 
+    aggregate_pipeline = []
+    aggregate_pipeline << @filter1_match  
+    aggregate_pipeline << @filter2_match 
+    aggregate_pipeline << unwind
+    aggregate_pipeline << group_by
+    aggregate_pipeline << project
+    aggregate_pipeline << project_pn
+    aggregate_pipeline << match_pn
+    aggregate_pipeline << sort_asc  
+    client[Ericsson::COLLECTION_NAME].aggregate(aggregate_pipeline)
+end
     end
 
     def filter_sub_options
@@ -108,8 +125,8 @@ module Ericsson
       key_array = []
       collection_docs = []
       result = client[Ericsson::COLLECTION_NAME].aggregate([
-        { '$match'=> { 'Region' => { '$in' => ['Great Lakes'] } } },
-        { '$match'=> { 'ProductName' => { '$in' => ['DUS4101'] } } },
+        { '$match'=> { params[:filter1] => { '$in' => params[:filter1_option] } } },
+        { '$match'=> { params[:filter2] => { '$in' => params[:filter2_option] } } },
         { '$sort' => {'_id' => 1} }
       ])
       counter = 0

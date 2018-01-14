@@ -14,7 +14,17 @@ $(document).ready(function(){
   $("#viewDataButton").click(function() {
     $('#viewDataTableDiv').html('<table id="example" class="display" cellspacing="0"></table>');
         $.ajax({
-          "url": 'http://localhost:3000/ericsson/hw_inv_audit/view_data',
+          url: '/ericsson/hw_inv_audit/view_data',
+          data: {
+            filter1: $("#filter1").val(),
+            filter1_option: $("#filter1_options").val(),
+            filter2:  $("#filter2").val(),
+            filter2_option: $("#filter2_options").val(),
+            //filter3: filter3.val(),
+            //filter4: filter4.val(),
+          },
+          type: "get",
+          datatype: "json",
           "success": function (json){
             $('#example').dataTable(json);
           },
