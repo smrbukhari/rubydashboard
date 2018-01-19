@@ -1,0 +1,21 @@
+     
+<%= javascript_include_tag 'exclusive/helpers/us-states' %>
+     <div id="map"><!-- Plotly chart will be drawn inside this DIV -->
+          </div>
+    <div id="myDiv"></div>
+
+  <script>
+    $(document).ready(function() {
+          var mapboxAccessToken = 'pk.eyJ1Ijoic21yYnVraGFyaSIsImEiOiJjaXlmaXhzb3cwMHNtMnFvZTVreGI4ZTg0In0.5D_IDLbhhOs8axZhyRWZ3w';
+      var map = L.map('map').setView([37.8, -96], 4);
+
+      L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' + mapboxAccessToken, {
+          id: 'mapbox.light',
+          attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+        maxZoom: 18,
+      }).addTo(map);
+
+      L.geoJson(statesData).addTo(map);
+      });
+  </script>
+
