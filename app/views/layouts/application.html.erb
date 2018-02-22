@@ -31,21 +31,29 @@
     <%= render 'layouts/shim' %>
   </head>
 
-  <body style="background-color:white;">
+  <body>
     <%= render 'layouts/navbar' %>
-    <% flash.each do |key, value| %>
-      <div class="alert alert-<%= key %>">
-        <a href="#" data-dismiss="alert" class="close">×</a>
-        <p><%= value %></p>
-      </div>
-    <% end %>
-    <div class="container-fluid">
-      <div class="row no-margin">
-        <div class="col-sm-12">
-          <%=yield %>
+    <%= render 'layouts/aside' if user_signed_in? %>
+    <!-- MAIN PANEL -->
+		<div id="main" role="main">
+      <% flash.each do |key, value| %>
+        <div class="alert alert-<%= key %>">
+          <a href="#" data-dismiss="alert" class="close">×</a>
+          <p><%= value %></p>
         </div>
+      <% end %>
+      <!-- MAIN CONTENT -->
+			<div id="content">
+        <%=yield %>
       </div>
     </div>
+    <!-- <div class="container-fluid">
+      <div class="row no-margin">
+        <div class="col-sm-12">
+
+        </div>
+      </div>
+    </div> -->
     <%#= render 'layouts/footer' %>
   </body>
 </html>

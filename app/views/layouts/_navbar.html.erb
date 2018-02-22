@@ -1,66 +1,31 @@
-<nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <% if request.env['PATH_INFO'] == "/" %>
-      <a class="navbar-brand logo" href="/">BI<sup>2</sup></a>
-      <% else %>
-      <a class="navbar-brand" href="/">BI<sup>2</sup></a>
-      <% end %>
-    </div>
+<!-- HEADER -->
+<header id="header">
+  <div id="logo-group">
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-      <% if request.env['PATH_INFO'] == ericsson_hw_inv_audit_index_path %>
-        <li class="active"><a href="<%= ericsson_hw_inv_audit_index_path %>">Dashboard <span class="sr-only">(current)</span></a></li>
-        <% else %>
-        <li><a href="<%= ericsson_hw_inv_audit_index_path %>">Dashboard<span class="sr-only">(current)</span></a></li>
-        <% end %>
-        <% if !current_user.nil? %>
-          <li><a href="/analytics">Analytics</a></li>
-        <% end %>
-        </ul>
-        <!-- <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">Separated link</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">One more separated link</a></li>
-          </ul>
-        </li> -->
-        
-      
-      <% if !current_user.nil? %>
-      <!-- <form class="navbar-form navbar-left">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
-        </div>
-        <button type="submit" class="btn btn-default">Submit</button>
-      </form> -->
-      <% end %>
-      <ul class="nav navbar-nav navbar-right">
-      <% if current_user.nil? %>
-      <% if request.env['PATH_INFO'] != "/users/sign_in" %>
-        <li><a href="/users/sign_in">Sign in</a></li>
-        <% end %>
-        <% if request.env['PATH_INFO'] != "/users/sign_up" %>
-         <li><a href="/users/sign_up">Sign up</a></li>
-         <% end %>
-            <% elsif %>
-              <li><%= link_to('Sign Out', destroy_user_session_path, :method => :delete) %></li> 
-       <% end %>
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
+    <!-- PLACE YOUR LOGO HERE -->
+    <a href="<%= root_path %>"><span id="logo">BI<sup>2</sup></span></a>
+    <!-- END LOGO PLACEHOLDER -->
+  </div>
+  <ul class="nav navbar-nav">
+    <% if user_signed_in? %>
+      <li>
+        <a href="<%= ericsson_hw_inv_audit_index_path %>">Dashboard <span class="sr-only">(current)</span></a>
+      </li>
+      <li><a href="/analytics">Analytics</a></li>
+    <% end %>
+  </ul>
+  <ul class="nav navbar-nav navbar-right">
+    <% if user_signed_in? %>
+      <li><%= link_to('Sign Out', destroy_user_session_path, method: :delete) %></li>
+      <!-- collapse menu button -->
+      <li id="hide-menu" class="btn-header pull-right">
+        <span> <a href="javascript:void(0);" data-action="toggleMenu" title="Collapse Menu"><i class="fa fa-reorder"></i></a> </span>
+      </li>
+      <!-- end collapse menu -->
+    <% else %>
+      <li><a href="/users/sign_in">Sign in</a></li>
+      <li><a href="/users/sign_up">Sign up</a></li>
+    <% end %>
+  </ul>
+</header>
+<!-- END HEADER -->

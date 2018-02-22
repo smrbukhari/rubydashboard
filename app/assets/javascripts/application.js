@@ -5,6 +5,13 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require bootstrap-sprockets
+//= require app.config.js
+//= require app.js
+$(document).on("turbolinks:load", function() {
+  console.log('tl load');
+  // DO NOT REMOVE : GLOBAL FUNCTIONS!
+  pageSetUp();
+});
 
 // Hide/Show Loader on Ajax Calls
 $(document).ajaxStart(function() {

@@ -13,6 +13,11 @@
  */
 @import "bootstrap-sprockets";
 @import "bootstrap";
+@import "font-awesome-sprockets";
+@import "font-awesome";
+@import "smartadmin-production";
+@import "smartadmin-skins";
+@import "your_style";
 @import "interface/front_page";
 @import "interface/demo";
 @import "interface/analytics";
@@ -33,5 +38,3 @@
 .well hr {
    border: 1px solid #ccc;
 }
-
-
