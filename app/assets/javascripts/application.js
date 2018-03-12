@@ -1,5 +1,6 @@
 //= require BiSquare
 //= require jquery
+//= require jquery-ui-1.10.3.min.js
 //= require loadingoverlay.min.js
 //= require loadingoverlay_progress.min.js
 //= require jquery_ujs
@@ -9,7 +10,6 @@
 //= require app.config.js
 //= require app.js
 $(document).on("turbolinks:load", function() {
-  console.log('tl load');
   // DO NOT REMOVE : GLOBAL FUNCTIONS!
 });
 

@@ -1,8 +1,8 @@
 <%= javascript_include_tag 'exclusive/geolocation' %>
+<%= javascript_include_tag 'exclusive/helpers/filters_helper' %>
 <%= javascript_include_tag 'exclusive/helpers/bi_dashboard_helper' %>
 <%= javascript_include_tag 'exclusive/bidashboard' %> <!-- load page specific JS !-->
 <%= javascript_include_tag 'exclusive/select2.min' %> <!-- load page specific JS !-->
-<%= javascript_include_tag 'exclusive/helpers/filters_helper' %>
 <%= javascript_include_tag 'exclusive/plotlyBarChart' %> <!-- load page specific JS !-->
 
 
@@ -115,7 +115,7 @@
       <div class="modal-header">
         <h4 class="modal-title" id="exampleModalLabel"></h4>
 
-    <div id="viewDataTableDiv" class="display" style="width:100%; overflow-x: auto;"> 
+    <div id="viewDataTableDiv" class="display" style="width:100%; overflow-x: auto;">
     </div>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -123,7 +123,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        
+
       </div>
     </div>
   </div>
