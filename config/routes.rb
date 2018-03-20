@@ -26,6 +26,7 @@ Rails.application.routes.draw do
       end
     end
     resources :sw_dep_tracker, only: [:index] 
+    resources :du_vs_bb_tracker, only: [:index] 
   end
 
 
