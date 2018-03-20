@@ -1,4 +1,5 @@
 $(document).ready(function(){
+  document.getElementById("default_union").checked = true;
   BiSquare.FiltersHelper.uncheckCheckboxes();
   BiSquare.BiDashboardHelper.staticPlotsInitialize();
   BiSquare.FiltersHelper.handleFilterChange('filter1', 'filter1_options', 'filter1_options_select_all');

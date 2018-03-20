@@ -25,6 +25,7 @@ Rails.application.routes.draw do
         get :view_data
       end
     end
+    resources :sw_dep_tracker, only: [:index] 
   end
 
 
