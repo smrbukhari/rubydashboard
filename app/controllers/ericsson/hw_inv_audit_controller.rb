@@ -35,9 +35,13 @@ module Ericsson
       end 
 
       # storing whatever is returned from query_map_data to map_data used by geolocation.js
-      map_data = query_map_data
-
-      render json: { data: { x_axis: x_axis_data, y_axis: y_axis_data, chart_label: label_data.first.keys[1], map_data: map_data }}, status: 200
+      map_data = params[:map_selection] == "plot_with_map" ? query_map_data : nil
+      if label_data.first.class == Hash
+        chart_label = label_data.first.keys[1]
+      else
+        chart_label = "NoLabel"
+      end
+      render json: { data: { x_axis: x_axis_data, y_axis: y_axis_data, chart_label: chart_label, map_data: map_data }}, status: 200
       #rescue NoMethodError => e
       #byebug
       # render json: {error: e, data1: e}, status: :bad_request 

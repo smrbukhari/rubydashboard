@@ -15,7 +15,8 @@ BiSquare.BiDashboardHelper = {
   staticPlotGeneration: function(settings) {
     var filter1 = $('#' + settings.filter1Id), filter2 = $('#' + settings.filter2Id), filter3 = $('#' + settings.filter3Id), filter4 = $('#' + settings.filter4Id),
         filter1_options = $('#' + settings.subFilter1Id), filter2_options = $('#' + settings.subFilter2Id),
-        mutually_inclusive_or_exclusive = $("input[name='mutually_inclusive_or_exclusive']:checked");
+        mutually_inclusive_or_exclusive = $("input[name='mutually_inclusive_or_exclusive']:checked"),
+        map_selection = $("input[name='map_selection']:checked");
     if(filter1.val() == 'Select Filter 1' || filter2.val() == 'Select Filter 2' || filter3.val() == 'GroupBy')
     {
       alert('Please select plot options first');
@@ -30,6 +31,7 @@ BiSquare.BiDashboardHelper = {
           filter3: filter3.val(),
           filter4: filter4.val(),
           mutually_inclusive_or_exclusive: mutually_inclusive_or_exclusive.val(),
+          map_selection: map_selection.val(),
         },
         type: "get",
         datatype: "json",
@@ -37,7 +39,9 @@ BiSquare.BiDashboardHelper = {
           plotlyBarChart(response, 'static_plBarDiv1');
           plotlyBarChart(response, 'static_plBarDiv2');
           plotlyBarChart(response, 'static_plBarDiv3');
-          geo_function_ericsson(response.data.map_data);
+          if(response.data.map_data) {
+            geo_function_ericsson(response.data.map_data);
+          }  
         },//success closing
         error: function(response) {
           alert('Filter Selection is incorrect!');
