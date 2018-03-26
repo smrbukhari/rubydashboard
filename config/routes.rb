@@ -15,7 +15,7 @@ Rails.application.routes.draw do
 
   get 'demo' => 'demo#index'
 
-  get 'mtce_dashboard', to: 'home#vendor_per_state', as: :mtce_dashboard
+  get 'mtce_dashboard', to: 'mtce_dashboard#index', as: :mtce_dashboard
   namespace :ericsson do 
     resources :hw_inv_audit, only: [:index] do
       collection do

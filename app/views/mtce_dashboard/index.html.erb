@@ -1,0 +1,27 @@
+<script type="text/javascript">
+  BiSquare.statesData = <%= raw @collection_docs.to_json %>;
+
+</script>
+<div class="row main_row">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="row well no-margin-bottom black-outline first_row_by_2">
+        <div id="map"><!-- Leaflet Map DIV --></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <style>
+    body { margin:0; padding:0; }
+    #map {
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      bottom:0;
+      height: 100%;
+    }
+  </style>
+
+  <%= javascript_include_tag 'exclusive/draw_choropleth_map' %>

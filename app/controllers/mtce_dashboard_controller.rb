@@ -1,10 +1,7 @@
-class HomeController < ApplicationController
-  def index
-    byebug
-  end
-  def vendor_per_state
+class MtceDashboardController < ApplicationController
+  def index  
    @collection_docs = []
-   query = client[Ericsson::CHOROPLETH_COLLECTION].aggregate({
+   query = client[Ericsson::CHOROPLETH_COLLECTION].aggregate([{
      '$lookup' =>
        {
          'from' => 'vendorPerState',
@@ -12,10 +9,12 @@ class HomeController < ApplicationController
          'foreignField' => 'Abbreviation',
          'as' => "vendor_with_polygons"
        }
-    })
+    }])
     query.each do |document|
+      document['properties']['vendor'] = document["vendor_with_polygons"].first["Vendor"]
      @collection_docs << document
     end
-    byebug
+    #byebug
+    #render json:{data:[collection_docs]}, status:200
   end
 end
