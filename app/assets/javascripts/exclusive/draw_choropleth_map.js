@@ -1,4 +1,4 @@
-console.log("calling part");
+//console.log("calling part");
 var mapboxAccessToken = 'pk.eyJ1Ijoic21yYnVraGFyaSIsImEiOiJjaXlmaXhzb3cwMHNtMnFvZTVreGI4ZTg0In0.5D_IDLbhhOs8axZhyRWZ3w';
 var map = L.map('map').setView([37.8, -96], 4);
 
@@ -67,14 +67,14 @@ var info = L.control();
 info.onAdd = function (map) {
   this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
   this.update();
-  console.log(this);
+//  console.log(this);
   return this._div;
 };
 // method that we will use to update the control based on feature properties passed
 info.update = function (props) {
+  console.log(props);
   this._div.innerHTML = '<h4>US Population Density</h4>' +  (props ?
-      '<b>' + props.name + '</b><br />' + props.density + ' people / mi<sup>2</sup>'
-      : 'Hover over a state');
+      '<b>' + props.name + '</b><br />' + props.vendor : 'Hover over a state');
 };
 
 info.addTo(map);
