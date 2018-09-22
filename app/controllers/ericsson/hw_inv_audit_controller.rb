@@ -101,10 +101,14 @@ module Ericsson
 
     def intersection_filter2_query #need count per region like default
       unwind = { '$unwind'=> "$#{params[:filter3]}"}
-      group_by = { '$group' => {'_id' => '$NodeName', 'ProductName' => {'$addToSet' => { 'pName' => '$ProductName'}} }}
+      #group_by = { '$group' => {'_id' => '$NodeName', 'ProductName' => {'$addToSet' => { 'pName' => '$ProductName'}} }}
+      group_by = { '$group' => {'_id' => { 'NN'=> '$NodeName', 'SM'=> '$Submarket' }, 'ProductName' => {'$addToSet' => { 'pName' => '$ProductName'}} }}
+      #project = { '$project' => { 'ProductName' => '$ProductName', 'len' => { '$size' => '$ProductName' } } }
       project = { '$project' => { 'ProductName' => '$ProductName', 'len' => { '$size' => '$ProductName' } } }
       project_pn = { '$project' => { 'PN' => { '$gt' => ['$len', 1] } }}
       match_pn = { '$match' => { 'PN' => true } }
+      group_by_2 = { '$group'=> { '_id'=> '$_id.SM', 'count'=> { '$push'=> '$PN' } } }
+      project_count = { '$project'=> { '_id'=> '$_id', 'count'=> { '$size'=> '$count' } } }
       sort_asc = {'$sort' => {'_id' => 1} } 
       aggregate_pipeline = []
       aggregate_pipeline << @filter1_match  
@@ -114,6 +118,8 @@ module Ericsson
       aggregate_pipeline << project
       aggregate_pipeline << project_pn
       aggregate_pipeline << match_pn
+      aggregate_pipeline << group_by_2
+      aggregate_pipeline << project_count
       aggregate_pipeline << sort_asc  
       client[Ericsson::COLLECTION_NAME].aggregate(aggregate_pipeline)
     end
