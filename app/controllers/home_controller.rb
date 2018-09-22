@@ -1,7 +1,7 @@
 class HomeController < ApplicationController
   def index
-    byebug
   end
+
   def vendor_per_state
    @collection_docs = []
    query = client[Ericsson::CHOROPLETH_COLLECTION].aggregate({

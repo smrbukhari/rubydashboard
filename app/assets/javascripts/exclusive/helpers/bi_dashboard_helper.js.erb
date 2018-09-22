@@ -38,10 +38,10 @@ BiSquare.BiDashboardHelper = {
         success: function(response) {
           plotlyBarChart(response, 'static_plBarDiv1');
           plotlyBarChart(response, 'static_plBarDiv2');
-          plotlyBarChart(response, 'static_plBarDiv3');
+          // plotlyBarChart(response, 'static_plBarDiv3');
           if(response.data.map_data) {
             geo_function_ericsson(response.data.map_data);
-          }  
+          }
         },//success closing
         error: function(response) {
           alert('Filter Selection is incorrect!');
