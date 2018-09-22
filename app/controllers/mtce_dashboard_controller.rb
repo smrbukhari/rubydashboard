@@ -10,6 +10,7 @@ class MtceDashboardController < ApplicationController
          'as' => "vendor_with_polygons"
        }
     }])
+   #byebug
     query.each do |document|
       document['properties']['vendor'] = document["vendor_with_polygons"].first["Vendor"]
      @collection_docs << document
