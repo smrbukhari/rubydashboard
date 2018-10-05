@@ -1,1 +1,98 @@
-index
+
+<%= javascript_include_tag 'exclusive/geolocation' %>
+<%= javascript_include_tag 'exclusive/helpers/filters_helper' %>
+<%= javascript_include_tag 'exclusive/helpers/filters_helper' %>
+
+
+
+<div class="row main_row">
+  <div class="col-sm-2 well column1">
+    <div class='row'>
+      <div class='col-md-12'>
+        <div class="plBarDiv1_filters">
+          <div class="row">
+            <select class="selectFilter" id="filter1" style="max-width:140px;">
+              <option>
+                Select ENM/Market
+              </option>
+            </select>
+          </div>
+          <div class="row">&nbsp;</div>
+          <input type="checkbox" id="filter1_options_select_all" checked="false" disabled/> Select All SubFilter 1 Options
+          <div class="row">
+            <select class="selectSubFilter" id="filter1_options" multiple="multiple" disabled style="max-width:140px;">
+              <option value="placeholder_text">
+                Select Filter 1 Options
+              </option>
+            </select>
+          </div>
+          <div class="row">&nbsp;</div>
+          <div class="row">
+            <select class="selectFilter" id="filter2" style="max-width:140px;">
+              <option>
+                Select Software Version(s)
+              </option>
+            </select>
+          </div>
+          <div class="row">&nbsp;</div>
+          <hr/>
+          <input type="checkbox" id="filter2_options_select_all" checked="false" disabled/> Select All SubFilter 2 Options
+          <div class="row">
+            <select class="selectSubFilter" id="filter2_options" multiple="multiple" disabled style="max-width:140px;">
+              <option value="placeholder_text">
+                Select Filter 2 Options
+              </option>
+            </select>
+          </div>
+          <div class="row">&nbsp;</div>
+          <div class="row">
+            <label for="default_union"><input id="default_union" type="radio" name="mutually_inclusive_or_exclusive" value="default" checked/>Default(Union)</label>
+            <br/>
+            <label for="intersection"><input id="intersection" type="radio" name="mutually_inclusive_or_exclusive" value="intersection" />Intersection</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-10">
+    <div class="row">
+      <div class="col-md-6 well no-margin-bottom black-outline first_row_by_2">
+        <div id="static_plBarDiv1"><!-- Plotly chart will be drawn inside this DIV -->
+        </div>
+      </div>
+      <div class="col-md-6 well no-margin-bottom black-outline second_row_by_2">
+          <div id="static_plBarDiv2"><!-- Plotly chart will be drawn inside this DIV -->
+          </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 well no-margin-bottom black-outline second_row_by_3">
+        <div id="mapid">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<%= javascript_include_tag 'exclusive/select2.min' %> <!-- load page specific JS !-->
+<%= javascript_include_tag 'exclusive/plotlyBarChart' %> <!-- load page specific JS !-->
+
+
+
+
+<script type="text/javascript" >
+  $(document).on("turbolinks:load", function() {
+    console.log('test');
+        $.ajax({
+          "url": 'http://localhost:3000/ericsson/sw_dep_tracker/sw_pivot_query',
+          "success": function (json){
+            //$('#example').dataTable(json);
+            console.log(json);
+          },
+          "dataType": "json"
+        }); // closing ajax under table div
+  }); //ensure that the following code runs after page ready event
+  
+</script>

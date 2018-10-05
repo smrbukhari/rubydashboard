@@ -25,7 +25,12 @@ Rails.application.routes.draw do
         get :view_data
       end
     end
-    resources :sw_dep_tracker, only: [:index] 
+    resources :sw_dep_tracker, only: [:index] do 
+      collection do
+        get :sw_pivot_query
+      end
+
+    end
     resources :du_vs_bb_tracker, only: [:index] 
   end
 
