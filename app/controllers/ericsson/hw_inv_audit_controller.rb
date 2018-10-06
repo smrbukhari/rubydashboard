@@ -19,8 +19,8 @@ module Ericsson
     def plot_one
       result = []
       label_data = []
-      @filter1_match = { '$match'=> { params[:filter1] => { '$in' => params[:filter1_option] } } }
-      @filter2_match = { '$match'=> { params[:filter2] => { '$in' => params[:filter2_option] } } }
+      @filter1_match = { '$match'=> { params[:filter1] => { '$in' => params[:filter1_option] } } } #Region
+      @filter2_match = { '$match'=> { params[:filter2] => { '$in' => params[:filter2_option] } } } #Region Name
       result = if intersection?
                  intersection_filter2_query
                else
@@ -79,7 +79,7 @@ module Ericsson
     end
 
     def default_filter2_query
-      unwind = { '$unwind'=> "$#{params[:filter3]}"}
+      unwind = { '$unwind'=> "$#{params[:filter3]}"} #unwind Submarket which is filter3
       group_by = { '$group'=> { '_id'=> "$#{params[:filter3]}" , "Product(s)"=> { '$sum'=> 1 } } }
       group_by_with_addtoset = { '$group'=> { '_id'=> "$#{params[:filter3]}", 'uniqueCount' => { '$addToSet' => { params[:filter4] => "$#{params[:filter4]}", params[:filter2] => "$#{params[:filter2]}" } }, "Product(s)" => { '$sum'=> 1 } } }
       project = { '$project' => { 'uniqueNodeNameCount' => { '$size' => '$uniqueCount' } }}
@@ -101,10 +101,12 @@ module Ericsson
 
     def intersection_filter2_query #need count per region like default
       unwind = { '$unwind'=> "$#{params[:filter3]}"}
+      #filter1 already selected
+      #filter2 already selected
       #group_by = { '$group' => {'_id' => '$NodeName', 'ProductName' => {'$addToSet' => { 'pName' => '$ProductName'}} }}
-      group_by = { '$group' => {'_id' => { 'NN'=> '$NodeName', 'SM'=> '$Submarket' }, 'ProductName' => {'$addToSet' => { 'pName' => '$ProductName'}} }}
+      group_by = { '$group' => {'_id' => { 'NN'=> '$NodeName', 'SM'=> '$' + params[:filter1] }, params[:filter2]  => {'$addToSet' => { 'pName' => '$' + params[:filter2] }} }}
       #project = { '$project' => { 'ProductName' => '$ProductName', 'len' => { '$size' => '$ProductName' } } }
-      project = { '$project' => { 'ProductName' => '$ProductName', 'len' => { '$size' => '$ProductName' } } }
+      project = { '$project' => { params[:filter2] => '$' + params[:filter2], 'len' => { '$size' => '$' + params[:filter2]} } }
       project_pn = { '$project' => { 'PN' => { '$gt' => ['$len', 1] } }}
       match_pn = { '$match' => { 'PN' => true } }
       group_by_2 = { '$group'=> { '_id'=> '$_id.SM', 'count'=> { '$push'=> '$PN' } } }
@@ -133,30 +135,36 @@ module Ericsson
     def view_data
       key_array = []
       collection_docs = []
-      result = client[Ericsson::COLLECTION_NAME].aggregate([
-        { '$match'=> { params[:filter1] => { '$in' => params[:filter1_option] } } },
-        { '$match'=> { params[:filter2] => { '$in' => params[:filter2_option] } } },
-        { '$sort' => {'_id' => 1} }
-      ])
-      counter = 0
-      #byebug
-      begin
-        #client[Ericsson::COLLECTION_NAME].find.limit(100).each do |document| #limit 100 records
-          result.each do |document|
-          docs = document.tap { |hs| hs.delete("_id") }
-          collection_docs << docs
-          if counter == 0
-            docs.each do |key, value|
-              if key != "biuser_id"
-                key_array << { title: key, data: key }
-              end
-            end # docs.each end
-          end # end if
-          counter = counter + 1
-        end # document end
-      rescue
+      if intersection?
+          view_data_intersection
+          else
+            result = client[Ericsson::COLLECTION_NAME].aggregate([
+              { '$match'=> { params[:filter1] => { '$in' => params[:filter1_option] } } },
+              { '$match'=> { params[:filter2] => { '$in' => params[:filter2_option] } } },
+              { '$sort' => {'_id' => 1} }
+            ])
+            counter = 0
+            #byebug
+            begin
+              #client[Ericsson::COLLECTION_NAME].find.limit(100).each do |document| #limit 100 records
+                result.each do |document|
+                docs = document.tap { |hs| hs.delete("_id") }
+                collection_docs << docs
+                if counter == 0
+                  docs.each do |key, value|
+                    if key != "biuser_id"
+                      key_array << { title: key, data: key }
+                    end
+                  end # docs.each end
+                end # end if
+                counter = counter + 1
+              end # document end
+            rescue
+            end
+            render json: {columns:key_array,data:collection_docs,buttons:["excelHtml5","csvHtml5","pdfHtml5"],dom: "Bfrtip",processing: "true"}, status:200
       end
-      render json: {columns:key_array,data:collection_docs,buttons:["excelHtml5","csvHtml5","pdfHtml5"],dom: "Bfrtip",processing: "true"}, status:200
     end
+
+  
   end
 end
