@@ -135,34 +135,47 @@ module Ericsson
     def view_data
       key_array = []
       collection_docs = []
-      if intersection?
-          view_data_intersection
-          else
-            result = client[Ericsson::COLLECTION_NAME].aggregate([
-              { '$match'=> { params[:filter1] => { '$in' => params[:filter1_option] } } },
-              { '$match'=> { params[:filter2] => { '$in' => params[:filter2_option] } } },
-              { '$sort' => {'_id' => 1} }
-            ])
-            counter = 0
-            #byebug
-            begin
-              #client[Ericsson::COLLECTION_NAME].find.limit(100).each do |document| #limit 100 records
-                result.each do |document|
-                docs = document.tap { |hs| hs.delete("_id") }
-                collection_docs << docs
-                if counter == 0
-                  docs.each do |key, value|
-                    if key != "biuser_id"
-                      key_array << { title: key, data: key }
-                    end
-                  end # docs.each end
-                end # end if
-                counter = counter + 1
-              end # document end
-            rescue
-            end
-            render json: {columns:key_array,data:collection_docs,buttons:["excelHtml5","csvHtml5","pdfHtml5"],dom: "Bfrtip",processing: "true"}, status:200
+      #byebug
+      if intersection? == true # intersection reporting false
+        byebug
+        result = client[Ericsson::COLLECTION_NAME].aggregate([
+        { '$match'=> { params[:filter1] => { '$in' => params[:filter1_option] } } },
+        { '$match'=> { params[:filter2] => { '$in' => params[:filter2_option] } } },
+        { '$unwind'=> "$#{params[:filter3]}"},
+        { '$group' => {'_id' => { 'NN'=> '$NodeName', 'SM'=> '$' + params[:filter1] }, params[:filter2]  => {'$addToSet' => { 'pName' => '$' + params[:filter2] }} }},
+        { '$project' => { params[:filter2] => '$' + params[:filter2], 'len' => { '$size' => '$' + params[:filter2]} } },
+        { '$project' => { 'PN' => { '$gt' => ['$len', 1] } }},
+        { '$match' => { 'PN' => true } },
+        { '$group'=> { '_id'=> '$_id.NN', 'count'=> { '$push'=> '$PN' } } }, #print NodeNames, still need to bring all fields
+        { '$project'=> { '_id'=> '$_id', 'count'=> { '$size'=> '$count' } } },
+        { '$sort' => {'_id' => 1} }
+        ])
+      else
+        result = client[Ericsson::COLLECTION_NAME].aggregate([
+          { '$match'=> { params[:filter1] => { '$in' => params[:filter1_option] } } },
+          { '$match'=> { params[:filter2] => { '$in' => params[:filter2_option] } } },
+          { '$sort' => {'_id' => 1} }
+        ])
       end
+      counter = 0
+      #byebug
+      begin
+        #client[Ericsson::COLLECTION_NAME].find.limit(100).each do |document| #limit 100 records
+          result.each do |document|
+          docs = document.tap { |hs| hs.delete("_id") }
+          collection_docs << docs
+          if counter == 0
+            docs.each do |key, value|
+              if key != "biuser_id"
+                key_array << { title: key, data: key }
+              end
+            end # docs.each end
+          end # end if
+          counter = counter + 1
+        end # document end
+      rescue
+      end
+      render json: {columns:key_array,data:collection_docs,buttons:["excelHtml5","csvHtml5","pdfHtml5"],dom: "Bfrtip",processing: "true"}, status:200
     end
 
   
